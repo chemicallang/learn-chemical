@@ -1,0 +1,36 @@
+# .github/workflows/deploy.yml
+name: Publish mdBook to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main    # or your default branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          components: rustfmt
+
+      - name: Install mdBook
+        run: cargo install mdbook --locked
+
+      - name: Build the book
+        run: mdbook build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./book
+          publish_branch: gh-pages
+          # If you want the site at https://chemicallang.github.io/, add a CNAME:
+          cname: chemicallang.github.io
