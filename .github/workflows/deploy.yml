@@ -1,29 +1,30 @@
 # .github/workflows/deploy.yml
 name: Publish mdBook to GitHub Pages
 
-# Grant only what’s needed
 permissions:
-  contents: read      # for checkout
-  pages: write        # to publish to GitHub Pages
-  id-token: write     # required by configure-pages
+  contents: read    # for checkout
+  pages: write      # to publish to GitHub Pages
+  id-token: write   # required by configure-pages
 
 on:
   push:
     branches:
-      - main   # adjust if your default branch is different
+      - main       # or your default branch
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
 
+    # 👇 this is the key bit
+    environment:
+      name: github-pages
+
     steps:
-      # 1. Check out full history so we can orphan/create gh‑pages branch
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # 2. Install Rust toolchain & mdBook
       - name: Set up Rust
         uses: actions-rs/toolchain@v1
         with:
@@ -32,21 +33,17 @@ jobs:
       - name: Install mdBook
         run: cargo install mdbook --locked
 
-      # 3. Build the book
       - name: Build mdBook site
         run: mdbook build
 
-      # 4. Configure GitHub Pages
       - name: Configure Pages
         uses: actions/configure-pages@v3
 
-      # 5. Upload static book/ directory as the Pages artifact
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./book
 
-      # 6. Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
         with:
