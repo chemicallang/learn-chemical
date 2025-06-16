@@ -1,0 +1,5 @@
+[book]
+authors = ["Waqas Tahir"]
+language = "en"
+src = "src"
+title = "Learn Chemical"
