@@ -30,130 +30,47 @@ Chemical provides a range of primitive types:
 * **Integers**: `short`, `ushort`, `int`, `uint`, `long`, `ulong`
 * **Arbitrary‑Precision**: `bigint`, `ubigint`
 * **Floating Point**: `float`, `double`
+* **Function Type**: `(a : int, b : int) => int`
 
 These types form the foundation for more complex data structures and interop with C via `cstd`.
 
-## Enums
+## Functions
 
-Enumerations (enums) are declared with the `enum` keyword and are fully scoped:
-
-```ch
-enum Fruits {
-    Mango,
-    Banana,
-}
-````
-
-Access them by qualifying with the enum name:
+Functions in chemical start with `func` keyword, Here's a function that computes sum of two integers
 
 ```ch
-let f = Fruits.Mango   // ✅
-let g = Mango          // ❌ invalid: must write `Fruits.Mango`
-```
-
----
-
-## Structs
-
-Structs hold grouped data and methods. Use `public` to make them visible across modules:
-
-```ch
-public struct Point {
-    var x: int
-    var y: int
-
-    func sum(&self): int {
-        return x + y
-    }
+func sum(a : int, b : int) : int {
+    return 10;
 }
 ```
 
-### Extension Methods
+Extension methods would be discussed below after structs
 
-Add methods after the struct definition:
+Lets now see a generic function
 
 ```ch
-func (p: &Point) div(): int {
-    return p.x / p.y
+func <T> print(a : T, b : T) : T {
+    return a + b;
 }
 ```
 
----
-
-## Interfaces
-
-Define an interface of method signatures:
+#### Calling function pointers
 
 ```ch
-interface Printer {
-    func print(&self, a: int)
+func call_it(lambda : () => int) : int {
+    return lambda()
 }
 ```
 
-Implement it in two ways:
+## Null Value
 
-### Inline
-
-```ch
-struct ImplPrinter : Printer {
-    @override
-    func print(&self, a: int) {
-        printf("Printed: %d", a)
-    }
-}
-```
-
-### `impl` Block
+In C++ there's `nullptr` keyword which allows you to quickly check a pointer if it's null, similarly we have `null` keyword
 
 ```ch
-impl Printer for ImplPrinter {
-    func print(&self, a: int) {
-        printf("Printed: %d", a)
-    }
+if(pointer == null) {
+    // the pointer is null here
 }
 ```
-
----
-
-## Variants & Pattern‑Matching
-
-Variants are tagged unions:
-
-```ch
-variant Optional {
-    Some(value: int),
-    None(),
-}
-```
-
-Create and return them:
-
-```ch
-func create_optional(condition: bool): Optional {
-    if (condition) {
-        return Optional.Some(10)
-    } else {
-        return Optional.None()
-    }
-}
-```
-
-Match on them with `switch` (no `case` keyword):
-
-```ch
-func check_optional(opt: Optional) {
-    switch (opt) {
-        Optional.Some(value) => { printf("%d", value) }
-        Optional.None        => { /* nothing */ }
-    }
-}
-
-func is_this_some(opt: Optional): bool {
-    return opt is Optional.Some
-}
-```
-
----
 
 ## Control Flow
 
@@ -211,6 +128,212 @@ Chemical supports a rich set of control constructs:
       default  => { /* … */ }
   }
   ```
+
+---
+
+## Enums
+
+Enumerations (enums) are declared with the `enum` keyword and are fully scoped:
+
+```ch
+enum Fruits {
+    Mango,
+    Banana,
+}
+````
+
+Access them by qualifying with the enum name:
+
+```ch
+let f = Fruits.Mango   // ✅
+let g = Mango          // ❌ invalid: must write `Fruits.Mango`
+```
+
+---
+
+## Structs
+
+Structs hold grouped data and methods. Use `public` to make them visible across modules:
+
+```ch
+public struct Point {
+    var x: int
+    var y: int
+
+    func sum(&self): int {
+        return x + y
+    }
+}
+```
+
+Lets create an object of this struct and call sum on it
+
+```ch
+var point = Point { x : 10, y : 20 }
+var sum = point.sum()
+```
+
+You can omit the type when it can be inferred
+
+```ch
+func create_point() : Point {
+    return { x : 10, y : 20 }
+}
+```
+
+### Inheritance
+
+You can use inheritance to build struct definitions
+
+```
+struct Animal {}
+
+struct Dog : Animal {}
+
+struct Fish : Animal {}
+```
+
+You can inherit a single struct, can implement multiple interfaces
+
+### Extension Methods
+
+Add methods after the struct definition:
+
+```ch
+func (p: &Point) div(): int {
+    return p.x / p.y
+}
+```
+
+---
+
+## Interfaces
+
+Define an interface of method signatures:
+
+```ch
+interface Printer {
+    func print(&self, a: int)
+}
+```
+
+Implement it in two ways:
+
+### Inline
+
+```ch
+struct ImplPrinter : Printer {
+    @override
+    func print(&self, a: int) {
+        printf("Printed: %d", a)
+    }
+}
+```
+
+### `impl` Block
+
+```ch
+impl Printer for ImplPrinter {
+    func print(&self, a: int) {
+        printf("Printed: %d", a)
+    }
+}
+```
+
+## Namespaces
+
+Similar to `c++` namespaces
+
+```ch
+public namespace mine {
+    
+    public var global_variable : int = 0
+
+    public struct Point {
+        var x : int
+        var y : int
+    }
+
+}
+```
+
+Access members like this
+
+```ch
+func temp() {
+    var p = mine::Point { x: 10, y: 10 }
+}
+```
+
+---
+
+## Variants & Pattern‑Matching
+
+Variants are tagged unions:
+
+```ch
+variant Optional {
+    Some(value: int),
+    None(),
+}
+```
+
+Create and return them:
+
+```ch
+func create_optional(condition: bool): Optional {
+    if (condition) {
+        return Optional.Some(10)
+    } else {
+        return Optional.None()
+    }
+}
+```
+
+Match on them with `switch` (no `case` keyword):
+
+```ch
+func check_optional(opt: Optional) {
+    switch (opt) {
+        Some(value) => { printf("%d", value) }
+        None        => { /* nothing */ }
+    }
+}
+```
+
+You can easily check a variant using `is` keyword
+
+```ch
+func is_this_some(opt: Optional): bool {
+    return opt is Optional.Some
+}
+```
+
+Members can be extracted easily and safely using this syntax
+
+```ch
+func get_value() : int {
+    // default value is -1 if its not `Some`
+    var Some(value) = opt else -1
+    printf("the value is : %d\n", value);
+}
+```
+
+It supports different else cases
+
+```ch
+func print_value() {
+    // return early without printing if its not `Some`
+    var Some(value) = opt else return;
+    printf("the value is : %d\n", value);
+}
+
+func get_value() : int {
+    // compiler assumes its always `Some`
+    var Some(value) = opt else unreachable;
+    printf("the value is : %d\n", value);
+}
+```
 
 ---
 
