@@ -31,6 +31,8 @@ Chemical provides a range of primitive types:
 * **Arbitrary‑Precision**: `bigint`, `ubigint`
 * **Floating Point**: `float`, `double`
 * **Function Type**: `(a : int, b : int) => int`
+* **Pointer Types**: `*int, *mut int`
+* **Reference Types**: `&int, &mut int`
 
 These types form the foundation for more complex data structures and interop with C via `cstd`.
 
@@ -205,6 +207,8 @@ func (p: &Point) div(): int {
 }
 ```
 
+Extension methods only support reference types that point to a container (struct / variant / static interface)
+
 ---
 
 ## Interfaces
@@ -239,6 +243,20 @@ impl Printer for ImplPrinter {
     }
 }
 ```
+
+### Static Interfaces
+
+interfaces can be made static using `@static` annotation above them, This means interfaces will be implemented
+once
+
+```ch
+@static
+interface Organizer {
+    func organize(&self)
+}
+```
+
+Extension methods are only possible on static interfaces, Normal interfaces cannot support extension methods
 
 ## Namespaces
 
