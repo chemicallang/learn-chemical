@@ -31,6 +31,10 @@ Chemical provides a range of primitive types:
 * **Arbitrary‑Precision**: `bigint`, `ubigint`
 * **Floating Point**: `float`, `double`
 * **Function Type**: `(a : int, b : int) => int`
+
+
+Pointers and reference types also exist
+
 * **Pointer Types**: `*int, *mut int`
 * **Reference Types**: `&int, &mut int`
 
@@ -153,6 +157,17 @@ let g = Mango          // ❌ invalid: must write `Fruits.Mango`
 
 ---
 
+## Arrays
+
+Array can hold multiple types and provide indexed access, Just use `[]` to create an array
+
+```ch
+
+var arr = [ first_value, second_value ]
+var first_value = &arr[0] // pointer to the first value
+
+```
+
 ## Structs
 
 Structs hold grouped data and methods. Use `public` to make them visible across modules:
@@ -180,6 +195,29 @@ You can omit the type when it can be inferred
 ```ch
 func create_point() : Point {
     return { x : 10, y : 20 }
+}
+```
+
+### Constructors and Destructors
+
+Chemical provides a way to write constructors and destructors for a struct, here the function
+that has annotation `@make` is a constructor and function with annotation `@delete` is a destructor
+
+```
+struct HeapData {
+
+    var data : *void
+
+    @make
+    func make() {
+        data = malloc(sizoef(Data))
+    }
+
+    @delete
+    func delete(&self) {
+        free(data)
+    }
+
 }
 ```
 
@@ -283,6 +321,20 @@ func temp() {
 }
 ```
 
+#### Using statement
+
+You can use the `using` keyword to bring symbols for a namespace into current scope
+
+```ch
+using namespace std;
+```
+
+or just a single symbol
+
+```ch
+using std::string_view
+```
+
 ---
 
 ## Variants & Pattern‑Matching
@@ -369,3 +421,17 @@ The compiler will emit an error if you attempt pointer dereference or other unsa
 
 
 ---
+
+## Type statements (typealias)
+
+Type alias allows us to alias a type, Lets see
+
+```ch
+type MyInt = int
+```
+
+Now you can use MyInt instead of int
+
+```
+func check_my_int(i : MyInt) : bool
+```
