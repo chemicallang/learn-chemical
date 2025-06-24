@@ -1,8 +1,26 @@
 # Language Overview
 
-Chemical is a native, statically‑typed programming language designed to be safe and easy to use while giving developers low‑level control. If you’re familiar with languages like TypeScript, Rust, or C, many of Chemical’s constructs will feel familiar—but with cleaner syntax and safety‑oriented defaults.
+Chemical is a native, statically‑typed programming language designed to be safe and easy to use while giving developers low‑level control. If you’re familiar with languages like TypeScript, Rust, or C, many of Chemical’s constructs will feel familiar.
 
-In this chapter, we’ll cover the core syntax and features of Chemical: enums, structs, interfaces, variants, control flow, unsafe blocks, variable declarations, and the built‑in type system.
+This chapter provides a concise guide to Chemical’s core syntax and features, including:
+
+- Variable and constant declarations
+
+- Primitive and compound types
+
+- Functions and generics
+
+- Comments and documentation
+
+- Control‑flow constructs
+
+- Enumeration and variant types
+
+- Data structures: arrays, structs, and interfaces
+
+- Namespaces, extension methods, and unsafe blocks
+
+- Type aliases
 
 ---
 
@@ -22,6 +40,8 @@ var count: int = 42
 const name: *char = "Chemical"
 ```
 
+---
+
 ## Built‑In Types
 
 Chemical provides a range of primitive types:
@@ -39,6 +59,8 @@ Pointers and reference types also exist
 * **Reference Types**: `&int, &mut int`
 
 These types form the foundation for more complex data structures and interop with C via `cstd`.
+
+---
 
 ## Functions
 
@@ -67,6 +89,8 @@ func call_it(lambda : () => int) : int {
     return lambda()
 }
 ```
+
+---
 
 ## Comments
 
@@ -191,6 +215,8 @@ var arr = [ first_value, second_value ]
 var first_value = &arr[0] // pointer to the first value
 
 ```
+
+---
 
 ## Structs
 
@@ -319,6 +345,8 @@ interface Organizer {
 ```
 
 Extension methods are only possible on static interfaces, Normal interfaces cannot support extension methods
+
+---
 
 ## Namespaces
 
