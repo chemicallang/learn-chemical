@@ -68,15 +68,27 @@ func call_it(lambda : () => int) : int {
 }
 ```
 
-## Null Value
+## Comments
 
-In C++ there's `nullptr` keyword which allows you to quickly check a pointer if it's null, similarly we have `null` keyword
+Chemical supports both single line and multiline comments
 
-```ch
-if(pointer == null) {
-    // the pointer is null here
-}
+a single line comment starts with two forward slashes
+
 ```
+// Here's my single line comment
+```
+
+multi line comments start with `/*` and end with `*/`
+
+```
+/* 
+    Here's my multi line comment
+*/
+```
+
+Multi line Comments cannot be nested
+
+---
 
 ## Control Flow
 
@@ -134,6 +146,18 @@ Chemical supports a rich set of control constructs:
       default  => { /* … */ }
   }
   ```
+
+---
+
+## Null Value
+
+In C++ there's `nullptr` keyword which allows you to quickly check a pointer if it's null, similarly we have `null` keyword
+
+```ch
+if(pointer == null) {
+    // the pointer is null here
+}
+```
 
 ---
 
