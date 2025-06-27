@@ -207,7 +207,7 @@ let g = Mango          // ❌ invalid: must write `Fruits.Mango`
 
 ## Arrays
 
-Array can hold multiple types and provide indexed access, Just use `[]` to create an array
+Array can hold multiple values and provide indexed access, Just use `[]` to create an array
 
 ```ch
 
