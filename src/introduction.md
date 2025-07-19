@@ -41,7 +41,7 @@ In this book, you will learn how to:
    chemical.mod
    ```
 
-   ```toml
+   ```
    module main
 
    # Tell the compiler to include all .ch files in `src/`
@@ -65,14 +65,14 @@ hello_chemical/
 * **Windows**:
 
   ```powershell
-  chemical.exe chemical.mod -o main.exe
+  chemical.exe chemical.mod -o main.exe --mode debug_complete
   .\main.exe
   ```
 
 * **Linux/macOS**:
 
   ```bash
-  chemical chemical.mod -o main && ./main
+  chemical chemical.mod -o main --mode debug_complete && ./main
   ```
 
 > **Tip:** If you prefer not to import `cstd`, you can declare extern functions inline:
