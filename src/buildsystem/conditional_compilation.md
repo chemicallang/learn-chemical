@@ -15,6 +15,9 @@ We can also use a if condition with this source statement like this
 ```
 // include win directory only when compiling for windows
 source "win" if windows
+
+// include pos directory only when compiling for posix
+source "pos" if posix
 ```
 
 currently support for conditionals is limited, You should use a `build.lab` file for proper support
