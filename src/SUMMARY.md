@@ -1,9 +1,12 @@
 # Summary
 
 - [Introduction](introduction.md)
-- [Language Overview](language_overview.md)
-- [Command Line]()
-    - [Basics](commandline/basics.md)
+- [Language Overview]()
+    - [Language Basics](language_overview/basics.md)
+    - [Generics](language_overview/generics.md)
+- [Build System]()
+    - [Command Line Basics](buildsystem/command_line_basics.md)
+    - [Conditional Compilation](buildsystem/conditional_compilation.md)
 - [Standard Library]()
     - [Old Standard Library]()
         - [Overview](old_std_lib/overview.md)

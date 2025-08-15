@@ -12,6 +12,18 @@ In this book, you will learn how to:
 3. Import and use modules (including the C standard library via `cstd`)
 4. Build and run your Chemical applications
 
+### Grab a chemical binary
+
+You should download chemical executable from the [main page](/) or from [github releases](https://github.com/chemicallang/chemical/releases)
+
+There are two types of chemical binaries:
+
+1 - based on LLVM & Clang (generated code is faster)
+
+2 - based on Tiny CC (compilation is a little faster)
+
+Both are capable of generating C code and running it and producing binaries from it
+
 ### Hello, World!
 
 1. Create a directory for your project and enter it:
@@ -82,4 +94,4 @@ hello_chemical/
 > public func printf(format: *char, _ : any...) : int
 > ```
 
-That's it! You’ve just compiled and run your first Chemical program. In the next chapter, we’ll dive deeper into project structure and configuration.\`\`\`
+That's it! You’ve just compiled and run your first Chemical program. In the next chapter, we’ll dive deeper into project structure and configuration.

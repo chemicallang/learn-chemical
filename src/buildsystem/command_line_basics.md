@@ -1,6 +1,4 @@
-# Command Line
-
-## Basics
+# Command Line Basics
 
 You can absolutely build a chemical source file without a `chemical.mod` or `build.lab` file
 
@@ -108,7 +106,7 @@ You should add a directory `mylib` sibling of `main.ch` which should contain a `
 
 #### Release Modes
 
-There are present these four release modes (more to be added)
+There are present these five release modes (more to be added)
 
 - _debug_
   - Default debug mode
@@ -138,13 +136,21 @@ To use a mode you must use `--mode` parameter in command line
 
 > chemical chemical.mod -o main.exe --mode debug_complete
 
-### Translating To C
+### Translating Chemical To C
 
 You can translate chemical to C, Chemical compiler outputs clean, readable C code that is performant, we are constantly improving the C translation
 
 Use the following command to translate just one file to C
 
 > chemical main.ch -o main.c
+
+### Translating C To Chemical (experimental)
+
+You can translate C to chemical, Chemical compiler parses C code using Clang and outputs chemical code
+
+However currently only headers are emitted (no function bodies), Also avoid complex code
+
+> chemical main.c -o main.ch
 
 ### Translating chemical.mod To build.lab
 
