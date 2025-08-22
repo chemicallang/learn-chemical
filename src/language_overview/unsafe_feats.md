@@ -144,6 +144,9 @@ destruct p
 // reuse its memory
 new (p) Point()
 
+// destruct new memory
+destruct p
+
 // free the memory
 dealloc p
 ```
