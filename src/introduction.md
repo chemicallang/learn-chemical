@@ -1,97 +1,34 @@
 # Introduction
 
-Welcome to **Chemical**, a modern, statically typed systems programming language with a clean syntax and seamless interoperability with C libraries.
+Chemical is a high-performance, statically typed systems programming language designed for modern developers who value both local systems performance and web-scale interoperability.
 
-- **File extension**: `.ch`
-- **Module descriptor**: `chemical.mod`
+It combines the strictness and power of C/C++ with a cleaner, more readable syntax, and incorporates an "Astro-like" web development model directly into the language core.
 
-In this book, you will learn how to:
+## Key Philosophies
 
-1. Scaffold a new Chemical project
-2. Write and organize your source code in Markdown-friendly files
-3. Import and use modules (including the C standard library via `cstd`)
-4. Build and run your Chemical applications
+- **No Magic**: Chemical avoids background magic. For example, string concatenation or memory allocation is explicit, giving you full control over performance.
+- **Modern Syntax**: A clean, expression-oriented syntax that reduces boilerplate.
+- **Seamless Interoperability**: Chemical translates directly to C, allowing it to leverage the entire ecosystem of C libraries without complex bindings.
+- **Web-First Systems Language**: Unlike other systems languages, Chemical treats HTML, CSS, and JS as first-class citizens through its Component-Based Interface (CBI) system.
 
-### Grab a chemical binary
+## In This Documentation
 
-You should download chemical executable from the [main page](/) or from [github releases](https://github.com/chemicallang/chemical/releases)
+This book is organized to take you from a curious beginner to a Chemical expert:
 
-There are two types of chemical binaries:
+1.  **[Getting Started](getting_started.md)**: Install the compiler and build your first program.
+2.  **[Language Guide](language/basics.md)**: Explore the core syntax, type system, and memory management.
+3.  **[Web Development](web/overview.md)**: Learn how to build websites using static HTML and interactive components (React, Solid).
+4.  **[Build System](build/lab.md)**: Master the `lab` build engine and `chemical.mod` configuration.
+5.  **[Standard Library](stdlib/std.md)**: Discover the built-in tools for strings, vectors, maps, and more.
 
-1 - based on LLVM & Clang (generated code is faster)
-
-2 - based on Tiny CC (compilation is a little faster)
-
-Both are capable of generating C code and running it and producing binaries from it
-
-### Hello, World!
-
-1. Create a directory for your project and enter it:
-
-   ```bash
-   mkdir hello_chemical && cd hello_chemical
-   ```
-
-2. Create a `src/` folder and add `main.ch`:
-
-   ```text
-   src/main.ch
-   ```
-
-3. In `src/main.ch`, write your first program:
-
-   ```ch
-   public func main() : int {
-       printf("Hello, World!\n");
-       return 0;
-   }
-   ```
-
-4. Create the `chemical.mod` file at the project root to describe sources and dependencies:
-
-   ```text
-   chemical.mod
-   ```
-
-   ```chmod
-   module main
-
-   # Tell the compiler to include all .ch files in `src/`
-   source "src"
-
-   # Import the C standard library module
-   import cstd
-   ```
-
-Your project structure now looks like:
-
-```
-hello_chemical/
-├── chemical.mod
-└── src/
-    └── main.ch
-```
-
-5. Build and run your program:
-
-* **Windows**:
-
-  ```bash
-  chemical.exe chemical.mod -o main.exe --mode debug_complete
-  .\main.exe
-  ```
-
-* **Linux/macOS**:
-
-  ```bash
-  chemical chemical.mod -o main --mode debug_complete && ./main
-  ```
-
-> **Tip:** If you prefer not to import `cstd`, you can declare extern functions inline:
+## Quick Look
 
 ```ch
-@extern
-public func printf(format: *char, _ : any...) : int
+public func main() : int {
+    var message = "Hello, Chemical!"
+    printf("%s\n", message)
+    return 0
+}
 ```
 
-That's it! You’ve just compiled and run your first Chemical program. In the next chapter, we’ll dive deeper into project structure and configuration.
+Ready to dive in? Let's get started!
