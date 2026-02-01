@@ -88,10 +88,10 @@ hello_chemical/
   ```
 
 > **Tip:** If you prefer not to import `cstd`, you can declare extern functions inline:
->
-> ```ch
-> @extern
-> public func printf(format: *char, _ : any...) : int
+
+```ch
+@extern
+public func printf(format: *char, _ : any...) : int
 > ```
 
 That's it! You’ve just compiled and run your first Chemical program. In the next chapter, we’ll dive deeper into project structure and configuration.
