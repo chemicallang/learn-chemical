@@ -53,7 +53,7 @@ Both are capable of generating C code and running it and producing binaries from
    chemical.mod
    ```
 
-   ```
+   ```chmod
    module main
 
    # Tell the compiler to include all .ch files in `src/`
@@ -76,7 +76,7 @@ hello_chemical/
 
 * **Windows**:
 
-  ```powershell
+  ```bash
   chemical.exe chemical.mod -o main.exe --mode debug_complete
   .\main.exe
   ```
@@ -92,6 +92,6 @@ hello_chemical/
 ```ch
 @extern
 public func printf(format: *char, _ : any...) : int
-> ```
+```
 
 That's it! You’ve just compiled and run your first Chemical program. In the next chapter, we’ll dive deeper into project structure and configuration.

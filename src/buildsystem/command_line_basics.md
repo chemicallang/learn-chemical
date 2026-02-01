@@ -39,7 +39,7 @@ Lets look at contents of a simple `chemical.mod` file, which prints
 
 _chemical.mod_
 
-```
+```chmod
 module main
 
 // this file must be present relative to this file
@@ -78,7 +78,7 @@ module named `mylib`
 
 _chemical.mod_
 
-```
+```chmod
 module main
 
 // this file must be present relative to this file
@@ -191,10 +191,12 @@ Apart from these, there are these options which further help
 
 Here's some examples using this options
 
-> chemical main.ch -o main.exe --out-ll main.ll
+```bash
+chemical main.ch -o main.exe --out-ll main.ll
 
-> chemical chemical.mod -o main.exe --out-ll-all
+chemical chemical.mod -o main.exe --out-ll-all
 
-> chemical chemical.mod -o main.exe --build-dir build --debug-ir --out-ll-all
+chemical chemical.mod -o main.exe --build-dir build --debug-ir --out-ll-all
+```
 
 `out-bc` also exists for emitting bitcode

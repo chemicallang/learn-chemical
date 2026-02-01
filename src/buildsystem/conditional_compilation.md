@@ -6,13 +6,13 @@ This is the preferred way of conditional compilation as it saves compilation tim
 
 in `chemical.mod` file, you can use `source` statements
 
-```
+```chmod
 source "src"
 ```
 
 We can also use a if condition with this source statement like this
 
-```
+```chmod
 // include win directory only when compiling for windows
 source "win" if windows
 
@@ -27,25 +27,12 @@ currently support for conditionals is limited, You should use a `build.lab` file
 You can also just do conditional compilation in source files like this
 
 ```ch
-if(def.windows) {
+comptime if(def.windows) {
     // code will only run on windows
 }
 ```
-
-Please note this syntax may change to something like this in future
-
-```ch
-$if(def.windows) {}
-```
-
-or
-
-```ch
-if comptime(def.windows) {}
-```
-
 ## Conditional Compilation inside build.lab
 
-since chemical code is written inside build.lab, You should just use if(def.windows) to include source files
+since chemical code is written inside `build.lab`, You should just use `comptime if(def.windows)` to include source files
 
 > *We'll go over this in the future, build.lab features are experimental*
