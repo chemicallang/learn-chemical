@@ -2,7 +2,7 @@
 
 Here's how strings can be used
 
-```
+```ch
 func take_str(str : std::string) {
     printf("%s", str.data());
 }
@@ -14,7 +14,7 @@ func run() {
 
 Some functions available in the string struct
 
-```
+```ch
 func run(str : std::string) {
     
     // append some characters

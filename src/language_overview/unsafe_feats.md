@@ -15,7 +15,7 @@ Use `new` (not `malloc`) to allocate on the heap. `new` returns an *unsafe point
 * Use `new T` to allocate an object of type `T` on the heap.
 * Use `delete` to destruct and free the memory, or `dealloc` to free without running destructors (see below).
 
-```c
+```ch
 // allocate an integer on the heap
 var heap_int = new int
 
@@ -28,7 +28,7 @@ delete heap_int
 
 You can allocate structs and call constructors:
 
-```c
+```ch
 var p = new Point { a: 10, b: 20 }
 
 // calling a constructor
@@ -46,7 +46,7 @@ Placement `new` separates allocation from initialization. Useful when you have a
 
 Placement `new` also avoids calling a destructor implicitly via assignment — you explicitly destruct when needed.
 
-```c
+```ch
 // allocate a Point on the heap
 var p = new Point
 
@@ -59,7 +59,7 @@ new (p) Point(10, 20)
 
 **Initialize multiple objects**
 
-```c
+```ch
 // allocate 10 points
 var p = new Point[10]
 
@@ -82,7 +82,7 @@ for(var i = 0; i < 10; i++) {
 
 `destruct` runs an object's destructor without freeing its memory. This lets you reuse the memory at the same address (for example, with placement `new`).
 
-```c
+```ch
 // allocate container on heap
 var p = new Container()
 
@@ -100,7 +100,7 @@ dealloc p
 
 This pattern appears in container implementations (e.g. dynamic arrays). You must provide the count when destructing multiple objects.
 
-```c
+```ch
 // allocate 10 points on the heap
 var p = new Point[10]
 
@@ -124,7 +124,7 @@ destruct[10] p
 
 Only use `dealloc` for types that **do not** have destructors. For types with destructors, use `destruct` (and then `dealloc` if you also want to free memory).
 
-```c
+```ch
 // allocate an integer on heap
 var p = new int
 
@@ -134,7 +134,7 @@ dealloc p
 
 **Typical flow when you need explicit destructor + free**
 
-```c
+```ch
 // allocate a point on heap
 var p = new Point()
 
@@ -157,7 +157,7 @@ dealloc p
 
 `delete` is syntactic sugar: it first runs the destructor (if present) and then frees the memory — equivalent to `destruct` followed by `dealloc`.
 
-```c
+```ch
 // allocate on heap
 var p = new Point()
 
@@ -167,7 +167,7 @@ delete p
 
 **Multiple objects**
 
-```
+```ch
 // allocate 10 points
 var p = new Point[10]
 
@@ -187,7 +187,7 @@ delete[10] p
 intrinsics::forget is an intrinsic function in the compiler that allows you to forget destruction for a variable
 or parameter
 
-```
+```ch
 func take_object(obj : Object) {
     
     // obj will not be dropped

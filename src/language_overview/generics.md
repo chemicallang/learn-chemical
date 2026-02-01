@@ -8,7 +8,7 @@ Generics are unstable feature of the compiler, Generics are a little unsafe (at 
 
 The generics in chemical are a little like templates in C++ at the moment
 
-```
+```ch
 func <T> print(a : T, b : T) {
     printf("%d, %d", a, b);
 }
@@ -16,7 +16,7 @@ func <T> print(a : T, b : T) {
 
 Yes, you can do generic dispatch
 
-```
+```ch
 func <T : Dispatch> call() {
     T::method()
 }
@@ -24,7 +24,7 @@ func <T : Dispatch> call() {
 
 You can also do conditional compilation
 
-```
+```ch
 func <T> size() : T {
     if (T is short) {
         return 2
@@ -42,7 +42,7 @@ func <T> size() : T {
 
 The syntax for generic structs is as follows
 
-```
+```ch
 struct Point<T> {
     var a : T
     var b : T
@@ -61,7 +61,7 @@ func usage() {
 
 Generic variants are similar to generic structs
 
-```
+```ch
 variant Optional<T> {
     Some(value : T)
     None()

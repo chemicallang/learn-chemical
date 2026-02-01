@@ -2,7 +2,7 @@
 
 Here are some functions available in the vector struct
 
-```
+```ch
 func create_vec() {
     var v = std::vector<int>()
 

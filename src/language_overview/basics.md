@@ -98,13 +98,13 @@ Chemical supports both single line and multiline comments
 
 a single line comment starts with two forward slashes
 
-```
+```ch
 // Here's my single line comment
 ```
 
 multi line comments start with `/*` and end with `*/`
 
-```
+```ch
 /* 
     Here's my multi line comment
 */
@@ -253,7 +253,7 @@ func create_point() : Point {
 Chemical provides a way to write constructors and destructors for a struct, here the function
 that has annotation `@make` is a constructor and function with annotation `@delete` is a destructor
 
-```
+```ch
 struct HeapData {
 
     var data : *void
@@ -275,7 +275,7 @@ struct HeapData {
 
 You can use inheritance to build struct definitions
 
-```
+```ch
 struct Animal {}
 
 struct Dog : Animal {}
@@ -484,6 +484,6 @@ type MyInt = int
 
 Now you can use MyInt instead of int
 
-```
+```ch
 func check_my_int(i : MyInt) : bool
 ```

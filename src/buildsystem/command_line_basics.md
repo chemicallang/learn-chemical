@@ -52,7 +52,7 @@ import cstd
 
 _main.ch_
 
-```
+```ch
 public func main() : int {
     printf("Hello World");
     return 0;

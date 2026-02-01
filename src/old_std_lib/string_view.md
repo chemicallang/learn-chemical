@@ -6,7 +6,7 @@ a view into it, This can be easily sliced
 
 Lets create and print a string_view
 
-```
+```ch
 func print_my_view(view : std::string_view) {
     printf("%s\n", view.data());
 }

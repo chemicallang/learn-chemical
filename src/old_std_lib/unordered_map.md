@@ -2,7 +2,7 @@
 
 Here's how to use an unordered map in chemical
 
-```
+```ch
 func take(map : std::unordered_map<int, int>& map) {
 
 }

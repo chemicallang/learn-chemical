@@ -2,7 +2,7 @@
 
 span is a struct that is kind of like a string_view
 
-```
+```ch
 func run() {
     var span = std::span<int>()
 
@@ -22,7 +22,7 @@ func run() {
 
 We can create spans out of arrays
 
-```
+```ch
 func run() {
     var arr = [10, 20, 30, 40, 50]
     var view = std::span<int>(arr)
@@ -31,7 +31,7 @@ func run() {
 
 or vectors
 
-```
+```ch
 func create_span(std::vector<int>& vec) {
     var view = std::span<int>(vec)
     // now you can pass it to other functions

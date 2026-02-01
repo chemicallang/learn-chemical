@@ -26,7 +26,7 @@ currently support for conditionals is limited, You should use a `build.lab` file
 
 You can also just do conditional compilation in source files like this
 
-```
+```ch
 if(def.windows) {
     // code will only run on windows
 }
@@ -34,13 +34,13 @@ if(def.windows) {
 
 Please note this syntax may change to something like this in future
 
-```
+```ch
 $if(def.windows) {}
 ```
 
 or
 
-```
+```ch
 if comptime(def.windows) {}
 ```
 
