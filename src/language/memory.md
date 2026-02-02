@@ -362,3 +362,61 @@ struct Resource {
 }
 ```
 
+## Destructor Lifecycle
+
+Understanding when `@delete` is called is critical for managing resources.
+
+### Scope Exit
+
+Destructors are called in reverse order of declaration when a scope ends.
+
+```ch
+{
+    var a = Resource { ... }
+    var b = Resource { ... }
+} // b.destroy() called, then a.destroy()
+```
+
+### Control Flow: `break`, `continue`, `return`
+
+Chemical ensures destructors are called even when exiting a block prematurely.
+
+```ch
+func process() {
+    var res = Resource { ... }
+    if (error) {
+        return // res.destroy() is called before returning
+    }
+}
+
+loop {
+    var res = Resource { ... }
+    if (done) {
+        break // res.destroy() is called before breaking
+    }
+}
+```
+
+### Moves and Destructors
+
+If an object is **moved** to another variable or passed to a function by value, the original variable is considered "empty" and its destructor will **not** be called.
+
+```ch
+func take(res : Resource) { } // res.destroy() called here at end of take()
+
+func example() {
+    var a = Resource { ... }
+    take(a) // a is MOVED to 'take', a.destroy() will NOT be called in example()
+}
+```
+
+### Assignment to Movable Types
+
+When you assign a new value to a variable that already holds a movable object, the **previous** object's destructor is called before the assignment happens.
+
+```ch
+var a = Resource { name: "First" }
+a = Resource { name: "Second" } // a.destroy() ("First") is called here
+```
+
+

@@ -60,6 +60,40 @@ var x : float = 10.5f
 var y = x + 5     // 5 is converted to float, result is 15.5f
 ```
 
+### Default Member Values
+
+You can provide default values for struct and variant members directly in their definition. This is useful for providing sensible defaults and is automatically picked up by constructors.
+
+```ch
+struct Player {
+    var health : int = 100
+    var score  : int = 0
+    var name   : *char = "Unnamed"
+}
+
+var p = Player {}
+// p.health is 100
+// p.score is 0
+// p.name is "Unnamed"
+```
+
+Default values are also supported in variants, which is particularly useful when variants inherit from structs to share common state:
+
+```ch
+struct Base {
+    var id : int = -1
+}
+
+variant Entity : Base {
+    Active(name : *char)
+    Inactive()
+}
+
+var e = Entity.Active("Alice")
+e.id == -1 // true
+```
+
+
 ## Operators
 
 ### Increment and Decrement

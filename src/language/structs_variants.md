@@ -447,6 +447,129 @@ func process() {
 } // res.delete() is called automatically here
 ```
 
+## Move & Copy Semantics
+
+Chemical distinguishes between three categories of types based on their copy and move behavior.
+
+### Non-Movable Types (Bitwise Copy)
+
+Simple structs without any special annotations are copied by value (bitwise copy):
+
+```ch
+struct Point {
+    var x : int
+    var y : int
+}
+
+var a = Point { x : 10, y : 20 }
+var b = a  // Bitwise copy, both a and b are usable
+a.x == b.x // true
+```
+
+### Movable Types
+
+Structs with a destructor (`@delete`) are **movable**. When assigned, ownership transfers and the original becomes invalid:
+
+```ch
+struct MoveObj {
+    var i : int
+    
+    @delete
+    func delete(&self) {
+        printf("Deleted!\n")
+    }
+}
+
+var a = MoveObj { i : 32 }
+var b = a   // a is MOVED into b, a is now invalid
+// Destructor called once when b goes out of scope
+```
+
+### Copyable Types
+
+Use `@copy` to define explicit copy behavior:
+
+```ch
+struct CopyObj {
+    var i : int
+    
+    @copy
+    func copy(&mut self, other : &self) {
+        i = other.i
+    }
+}
+
+var a = CopyObj { i : 45 }
+var b = a.copy()  // Explicit copy required
+```
+
+### Implicit Copyable Types
+
+Use `@implicit @copy` for automatic copying on assignment:
+
+```ch
+struct ImpCopyObj {
+    var i : int
+    
+    @implicit
+    @copy
+    func copy(&mut self, other : &self) {
+        i = other.i
+        printf("Copy called!\n")
+    }
+    
+    @delete
+    func delete(&self) {
+        printf("Delete called!\n")
+    }
+}
+
+var a = ImpCopyObj { i : 100 }
+var b = a   // Copy is called automatically
+// Both a and b are valid, both destructors called at scope exit
+```
+
+### Move/Copy Behavior Summary
+
+| Type | Annotation | Assignment Behavior |
+|------|------------|---------------------|
+| Non-movable | None | Bitwise copy, both usable |
+| Movable | `@delete` only | Move ownership, original invalid |
+| Explicit copy | `@copy` | Must call `.copy()` explicitly |
+| Implicit copy | `@implicit @copy` | Automatic copy on assignment |
+
+## Implicit Constructors
+
+Use `@implicit @constructor` to enable automatic type conversion:
+
+```ch
+struct Wrapper {
+    var value : int
+    
+    @implicit
+    @constructor
+    func from_int(v : int) {
+        init { value(v) }
+    }
+}
+
+func take_wrapper(w : Wrapper) : int {
+    return w.value
+}
+
+take_wrapper(42)  // int automatically converts to Wrapper
+```
+
+### Returning Implicit Types
+
+Functions can return values that are implicitly converted:
+
+```ch
+func get_wrapper() : Wrapper {
+    return 100  // int implicitly converted to Wrapper
+}
+```
+
 ## Variants
 
 Variants (also known as Tagged Unions) allow a variable to hold one of several different types of data.
@@ -503,3 +626,97 @@ if (my_shape is Shape.Circle) {
 > [!IMPORTANT]
 > Because Variants use a tag and union layout, they are highly memory-efficient, consuming only as much space as the largest case + the tag.
 
+### Methods in Variants
+
+Variants can have methods that operate on their internal data:
+
+```ch
+variant FuncInVariant {
+    First(value : int)
+    Second(value : int)
+    
+    func get(&self) : int {
+        switch(self) {
+            First(value) => return value;
+            Second(value) => return value;
+        }
+    }
+}
+
+var v = FuncInVariant.First(232)
+v.get()  // Returns 232
+```
+
+### Variant Inheritance from Structs
+
+Variants can inherit from structs to share common data across all cases:
+
+```ch
+struct Point {
+    var a : int = 10
+    var b : int = 20
+    
+    func multiply(&self) : int {
+        return a * b
+    }
+}
+
+variant Shape : Point {
+    Circle(radius : int)
+    Rect(width : int, height : int)
+}
+
+var s = Shape.Circle(5)
+s.a  // 10 (inherited, default initialized)
+s.b  // 20 (inherited, default initialized)
+s.multiply()  // 200
+```
+
+### Variant Interface Implementation
+
+Variants can implement interfaces with `@override`:
+
+```ch
+interface Giver {
+    func give(&self) : int
+}
+
+variant OptionalInt : Giver {
+    None()
+    Some(value : int)
+    
+    @override
+    func give(&self) : int {
+        switch(self) {
+            None() => return -1;
+            Some(value) => return value;
+        }
+    }
+}
+```
+
+#### Static Dispatch with Variants
+
+Use generic constraints for zero-cost abstraction:
+
+```ch
+func <T : Giver> get_value(v : &T) : int {
+    return v.give()
+}
+
+var opt = OptionalInt.Some(42)
+get_value(opt)  // 42
+```
+
+#### Dynamic Dispatch with Variants
+
+Use `dyn` for runtime polymorphism:
+
+```ch
+func process_giver(g : dyn Giver) : int {
+    return g.give()
+}
+
+var opt = OptionalInt.Some(93)
+process_giver(dyn<Giver>(opt))  // 93
+```

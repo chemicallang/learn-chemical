@@ -49,6 +49,80 @@ comptime func get_build_date() : *char {
 }
 ```
 
+### Comptime Constructors
+
+You can define constructors that run during compilation. These can return struct instances directly or delegate to other constructors using `intrinsics::wrap()`.
+
+```ch
+struct Pair {
+    var a : int
+    var b : int
+
+    @constructor
+    comptime func from_sum(sum : %literal<int>) {
+        return Pair {
+            a : sum / 2,
+            b : sum / 2
+        }
+    }
+
+    @constructor
+    comptime func delegated(use_first : bool) {
+        if (use_first) {
+            return intrinsics::wrap(first())
+        } else {
+            return intrinsics::wrap(second())
+        }
+    }
+
+    @constructor func first() { init { a(15) b(15) } }
+    @constructor func second() { init { a(20) b(20) } }
+}
+```
+
+### Comptime Types: `%literal` and `%runtime`
+
+- `%literal<T>`: Represents a compile-time constant of type `T`.
+- `%runtime<T>`: Represents a value that will only be available at runtime, but can be passed through comptime logic.
+
+```ch
+@constructor
+comptime func logger(thing : %runtime<*mut int>) {
+    // Delegate to an actual runtime constructor
+    return intrinsics::wrap(actual_constructor(thing));
+}
+```
+
+## Intrinsics API
+
+Chemical provides a set of low-level compiler intrinsics via the `intrinsics` namespace. These are mostly used inside `comptime` blocks.
+
+| Intrinsic | Description |
+|-----------|-------------|
+| `intrinsics::size(str)` | Returns the length of a string literal at compile-time. |
+| `intrinsics::get_line_no()` | Returns the current source line number. |
+| `intrinsics::get_caller_line_no()` | Returns the line number of the caller. |
+| `intrinsics::get_module_name()` | Returns the name of the current module. |
+| `intrinsics::get_module_scope()` | Returns the current module's scope path. |
+| `intrinsics::get_target()` | Returns information about the compilation target. |
+| `intrinsics::get_child_fn<T>(name)` | Retrieves a function pointer for a member function by its name (string). |
+| `intrinsics::wrap(call)` | Wraps a runtime call to be returned from a comptime context. |
+
+### Example: Reflection-like Function Access
+
+```ch
+struct MyAPI {
+    func execute() { printf("Executed!\n") }
+}
+
+comptime func get_exec_fn() : () => void {
+    return intrinsics::get_child_fn<MyAPI>("execute") as () => void
+}
+
+var fn = get_exec_fn()
+fn() // Calls MyAPI.execute
+```
+
 ## Attributes (Annotations)
 
 Attributes provide metadata to the compiler.
@@ -63,5 +137,6 @@ Attributes provide metadata to the compiler.
 @deprecated("Use new_system instead")
 func old_system() { ... }
 ```
+
 
 ---

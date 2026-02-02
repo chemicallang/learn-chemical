@@ -12,6 +12,49 @@ public func add(a : int, b : int) : int {
 }
 ```
 
+## Default Parameters
+
+Functions can have default values for parameters. When a parameter has a default value, it becomes optional when calling the function.
+
+```ch
+func greet(name : *char = "World") {
+    printf("Hello, %s!\n", name)
+}
+
+greet()         // Prints: Hello, World!
+greet("Alice")  // Prints: Hello, Alice!
+```
+
+### Default Parameters in Functions
+
+```ch
+func give_me_the_default_value(value : int = 832) : int {
+    return value
+}
+
+give_me_the_default_value()     // Returns 832
+give_me_the_default_value(100)  // Returns 100
+```
+
+### Default Parameters in Struct Methods
+
+Methods can also have default parameters:
+
+```ch
+struct Calculator {
+    func add(&self, a : int, b : int = 10) : int {
+        return a + b
+    }
+}
+
+var calc = Calculator {}
+calc.add(5)      // Returns 15 (5 + default 10)
+calc.add(5, 20)  // Returns 25 (5 + 20)
+```
+
+> [!NOTE]
+> Default parameters must be placed at the **end** of the parameter list. You cannot have a non-default parameter after a default one.
+
 ## Function Pointers
 
 A basic function type refers to a pure function pointer. These **cannot capture** variables from their surrounding scope.
