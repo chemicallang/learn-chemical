@@ -50,5 +50,3 @@ You can pass children to components or use them within layouts to structure your
 If a component uses an internal `#css` block, those styles are automatically scoped and included in the page's generated CSS file.
 
 ---
-
-Next: **[Markdown Integration](markdown.md)**

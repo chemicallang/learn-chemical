@@ -7,9 +7,10 @@ Welcome to Chemical! This guide will help you set up your environment and create
 1.  Download the latest compiler for your architecture from the [Releases](https://github.com/chemical-lang/chemical/releases) page.
 2.  Extract the binary to a directory on your machine.
 3.  Open a terminal as Administrator (Windows) or use `sudo` (Linux) and run:
-    ```bash
-    chemical configure
-    ```
+    
+```bash
+chemical configure
+```
     This automatically sets the `CHEMICAL_HOME` environment variable and adds the compiler to your `PATH`.
 
 ## 2. Your First Project
