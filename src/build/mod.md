@@ -32,5 +32,3 @@ One of the unique features of Chemical is that you **never** write `import` at t
 If you have two files `a.ch` and `b.ch` in the same module, they can see each other's public symbols automatically. If you import `std` in `chemical.mod`, all files in your project can see `std::string`, `std::vector`, etc., immediately.
 
 ---
-
-Next: **[Writing build.lab](build_lab.md)**

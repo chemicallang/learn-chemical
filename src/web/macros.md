@@ -75,5 +75,3 @@ var count = 5
 ```
 
 ---
-
-Next: **[HTML, CSS & JavaScript](html_css_js.md)**

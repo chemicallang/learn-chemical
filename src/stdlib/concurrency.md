@@ -76,5 +76,3 @@ printf("System has %d cores\n", cores)
 > Use `ThreadPool` for CPU-bound tasks to maximize performance while keeping your main thread responsive.
 
 ---
-
-Next: **[fs: File System](fs.md)**

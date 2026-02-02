@@ -65,5 +65,3 @@ func old_system() { ... }
 ```
 
 ---
-
-Next: **[Web Development Overview](../web/overview.md)**

@@ -64,5 +64,3 @@ comptime if (def.DEBUG_LOGS) {
 ```
 
 ---
-
-Next: **[Advanced Build Patterns](advanced_lab.md)**

@@ -38,8 +38,25 @@ comptime const VERSION = "1.0.0"
 ### Primitive Types
 - **Integers**: `i8`, `i16`, `i32`, `i64`, `int128` (and `u` prefixes for unsigned).
 - **C-Compatible**: `char`, `short`, `int`, `long`, `longlong`.
-- **Floats**: `float`, `double`, `longdouble`.
+- **Floats & Doubles**: 
+    - `float` (32-bit, use `f` suffix: `3.14f`)
+    - `double` (64-bit, default for literals: `3.14`)
+    - `longdouble`, `float128` (extended precision).
+    - Integers can be used in expressions with floats/doubles and will be implicitly converted.
 - **Other**: `bool`, `void`, `any`.
+
+## Operators
+
+### Increment and Decrement
+Chemical supports C++ style increment (`++`) and decrement (`--`) operators.
+- **Prefix**: `++i`, `--i` (increments/decrements then returns the new value).
+- **Postfix**: `i++`, `i--` (returns the current value then increments/decrements).
+
+```ch
+var i = 1
+i++      // i is now 2
+var j = ++i // i is 3, j is 3
+```
 
 ### Collections
 - **Arrays**: Fixed size. `var arr : [5]int`.
@@ -93,6 +110,47 @@ var dayName = switch (day) {
 }
 ```
 
----
+### Control Flow as Values
+In Chemical, `if`, `switch`, and even `loop` can be used as **expressions** that return a value.
 
-Next: **[Functions & Lambdas](functions.md)**
+- **If value**: `var x = if(cond) a else b`
+- **Switch value**: Directly returns the value after `=>`.
+- **Loop value**: Use `break value` to return a value from a loop.
+
+```ch
+var status = if (age >= 18) "Adult" else "Minor"
+
+var dayName = switch (day) {
+    1 => "Monday"
+    default => "Unknown"
+}
+
+var result = loop {
+    if (ready) break 42
+}
+```
+
+### The `in` Expression
+The `in` expression is a concise way to check if a value matches one of several constants, similar to a simplified switch expression.
+
+```ch
+var is_vowel = char in 'a', 'e', 'i', 'o', 'u'
+if (x !in 1, 2, 3) {
+    // x is not 1, 2, or 3
+}
+```
+
+## Loops
+
+Chemical provides several ways to repeat code:
+
+- **For loop**: Standard `for(init; cond; step)`.
+- **While loop**: `while(cond)`.
+- **Do-While loop**: `do { ... } while(cond)`.
+- **Infinite loop**: Use `loop { ... }` for a loop that runs forever unless a `break` or `return` is encountered.
+
+```ch
+loop {
+    if (task_done()) break
+}
+```

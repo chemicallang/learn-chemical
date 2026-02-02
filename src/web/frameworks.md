@@ -70,5 +70,3 @@ Each framework requires a setup call on the `HtmlPage` to include its runtime (u
 | **Preact** | `page.defaultPreactSetup()` |
 
 ---
-
-Next: **[Markdown Integration](markdown.md)**

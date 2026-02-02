@@ -38,5 +38,3 @@ The `BuildContext` is an interface provided to your `build` function. It contain
 A **Job** represents a single unit of work (e.g., "Build this executable"). You can have multiple jobs in a single build process (e.g., build a library and then build a test suite that uses it).
 
 ---
-
-Next: **[chemical.mod](mod.md)**

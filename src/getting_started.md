@@ -51,5 +51,3 @@ The `chemical.mod` file is the source of truth for your project's identity.
 - **Dependency Management**: It allows you to import other Chemical modules by their logical name.
 
 ---
-
-Next: **[Basics](language/basics.md)**

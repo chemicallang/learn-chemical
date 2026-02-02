@@ -54,5 +54,3 @@ import other_lib
 In Chemical, you **do not** write `import` at the top of `.ch` files. Instead, you declare dependencies once in `chemical.mod`. Every file in your project can immediately see symbols from the imported modules.
 
 ---
-
-Next: **[Advanced Features](advanced.md)**

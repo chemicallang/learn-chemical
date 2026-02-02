@@ -20,20 +20,93 @@ func main() {
 }
 ```
 
-### Methods and `@constructor`
+### Methods and Initialization
+You can add behavior to your structs using functions. For initialization, Chemical provides a powerful pattern using `@make` and `init` blocks.
 
-You can add behavior to your structs using functions. Use `@constructor` for complex initialization logic.
+#### The `init` Block
+The `init` block is a special constructor syntax that ensures all members of a struct are initialized before the function proceeds. This is the safest way to initialize structs with non-default-constructible members.
 
 ```ch
 struct Player {
     var name : std::string
     var health : int
 
-    @constructor func constructor(n : *char) {
-        name = std::string(n)
-        health = 100
+    @make
+    func make(n : *char) {
+        init {
+            name = std::string(n)
+            health = 100
+        }
+        // After init, you can perform additional logic
+        printf("Player %s created!\n", name.c_str())
     }
 }
+```
+
+### Struct Inheritance
+Chemical supports **single struct inheritance**. A derived struct inherits all members and functions of its base.
+
+```ch
+struct Animal {
+    var age : int
+    func breathe() { ... }
+}
+
+struct Dog : Animal {
+    var breed : std::string
+}
+
+var d = Dog {
+    Animal : Animal { age : 5 },
+    breed : "Golden Retriever"
+}
+d.breathe() // Inherited from Animal
+```
+
+## Enums
+
+Enums represent a set of named constants. They can have an underlying type (default is `int`) and even support inheritance.
+
+```ch
+enum Color : u8 {
+    Red,
+    Green,
+    Blue = 10, // Explicit value
+    Yellow     // 11
+}
+
+// Enum Inheritance
+enum extended_color : Color {
+    Cyan,
+    Magenta
+}
+```
+
+## Unions
+
+Unions are low-level memory structures where all members share the same memory location. They are primarily used for C interoperability or extreme memory optimization and are generally **unsafe**.
+
+```ch
+union IntFloat {
+    var i : int
+    var f : float
+}
+
+var u = IntFloat { i : 42 }
+unsafe {
+    printf("%f", u.f) // Accessing different members is unsafe!
+}
+```
+
+## Type Aliases
+
+Use the `type` keyword to create a new name for an existing type.
+
+```ch
+type ID = bigint
+type Callback = (int) => void
+
+var user_id : ID = 1000
 ```
 
 ## Automatic Memory Management

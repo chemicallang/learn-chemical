@@ -80,3 +80,38 @@ func do_something(callback : std::function<() => void>) {
     callback()
 }
 ```
+
+## Extension Functions
+
+Extension functions allow you to add new functionality to existing structs, variants, or interfaces without modifying their original definition. They are defined by specifying the receiver type in parentheses before the function name.
+
+**Extension functions can only be called through references.**
+
+```ch
+struct Point {
+    var x : int
+    var y : int
+}
+
+// Extension function for Point
+func (p : &Point) distance_to_origin() : float {
+    return sqrt((p.x * p.x + p.y * p.y) as float)
+}
+
+var pt = Point { x : 3, y : 4 }
+var d = pt.distance_to_origin() // Calls the extension function
+```
+
+Extension functions are also useful for adding generic logic to interfaces:
+
+```ch
+interface Printable {
+    func print(&self)
+}
+
+// Extension for any type that implements Printable
+func <T : Printable> (item : &T) print_twice() {
+    item.print()
+    item.print()
+}
+```

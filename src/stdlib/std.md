@@ -86,5 +86,3 @@ std::panic("Critical Failure!");
 - `dealloc`: A keyword/intrinsic for safe, typed deallocation.
 
 ---
-
-Next: **[concurrency: Multi-threading](concurrency.md)**

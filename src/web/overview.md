@@ -52,5 +52,3 @@ These are used inside functions to generate content dynamically. They typically 
 > To use these macros, you must import the corresponding CBI module (e.g., `import html_cbi`) in your `chemical.mod` file.
 
 ---
-
-Next: **[CBI Macros & Scopes](macros.md)**

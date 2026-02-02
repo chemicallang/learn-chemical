@@ -6,6 +6,8 @@
 - [Language Guide]()
     - [Basic Syntax](language/basics.md)
     - [Functions & Lambdas](language/functions.md)
+    - [Generics](language/generics.md)
+    - [Interfaces & Dyn](language/interfaces.md)
     - [Structs & Variants](language/structs_variants.md)
     - [Memory & Unsafe](language/memory.md)
     - [Modules & Namespaces](language/modules.md)
@@ -27,6 +29,7 @@
 
 - [Standard Library]()
     - [std: Core API Index](stdlib/std.md)
+    - [Strings & Views](stdlib/string.md)
     - [concurrency: Multi-threading](stdlib/concurrency.md)
     - [fs: File System](stdlib/fs.md)
     - [json: Data Serialization](stdlib/json.md)
