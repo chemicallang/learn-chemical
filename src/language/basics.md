@@ -38,12 +38,27 @@ comptime const VERSION = "1.0.0"
 ### Primitive Types
 - **Integers**: `i8`, `i16`, `i32`, `i64`, `int128` (and `u` prefixes for unsigned).
 - **C-Compatible**: `char`, `short`, `int`, `long`, `longlong`.
-- **Floats & Doubles**: 
-    - `float` (32-bit, use `f` suffix: `3.14f`)
-    - `double` (64-bit, default for literals: `3.14`)
-    - `longdouble`, `float128` (extended precision).
-    - Integers can be used in expressions with floats/doubles and will be implicitly converted.
 - **Other**: `bool`, `void`, `any`.
+
+### Floating Point Numbers
+
+Chemical supports several floating-point types:
+- `float`: 32-bit floating point. Use the `f` suffix for literals: `3.14f`
+- `double`: 64-bit floating point. This is the default for decimal literals: `3.14`
+- `longdouble`, `float128`: Extended precision types for specialized use.
+
+```ch
+var f1 : float = 3.14f      // 32-bit float
+var f2 : double = 3.14159   // 64-bit double (default)
+var f3 = 2.5                // inferred as double
+```
+
+Integers are implicitly converted when used in expressions with floats or doubles:
+
+```ch
+var x : float = 10.5f
+var y = x + 5     // 5 is converted to float, result is 15.5f
+```
 
 ## Operators
 
@@ -56,6 +71,12 @@ Chemical supports C++ style increment (`++`) and decrement (`--`) operators.
 var i = 1
 i++      // i is now 2
 var j = ++i // i is 3, j is 3
+var k = i-- // k is 3, i is now 2
+
+// Works with pointers too
+var arr = [10, 20, 30]
+var ptr = &arr[0]
+ptr++    // ptr now points to arr[1]
 ```
 
 ### Collections
@@ -79,7 +100,13 @@ var status = if (age >= 18) { "Adult" } else { "Minor" }
 ```
 
 ### Loops
-Chemical uses `for`, `while`, and `do-while`.
+
+Chemical provides several ways to repeat code:
+
+- **For loop**: Standard `for(init; cond; step)`.
+- **While loop**: `while(cond)`.
+- **Do-While loop**: `do { ... } while(cond)`.
+- **Infinite loop**: Use `loop { ... }` for a loop that runs forever unless a `break` or `return` is encountered.
 
 ```ch
 // Standard for loop
@@ -90,6 +117,17 @@ for (var i = 0; i < 10; i++) {
 // While loop
 while (condition) {
     // ...
+}
+
+// Do-while loop
+do {
+    attempt_connection()
+} while (!connected)
+
+// Infinite loop
+loop {
+    if (task_done()) break
+    process_next_item()
 }
 ```
 
@@ -110,47 +148,187 @@ var dayName = switch (day) {
 }
 ```
 
-### Control Flow as Values
-In Chemical, `if`, `switch`, and even `loop` can be used as **expressions** that return a value.
+## Control Flow as Values
 
-- **If value**: `var x = if(cond) a else b`
-- **Switch value**: Directly returns the value after `=>`.
-- **Loop value**: Use `break value` to return a value from a loop.
+In Chemical, `if`, `switch`, and even `loop` can be used as **expressions** that return a value. This is one of the most powerful features of the language.
+
+### If as a Value
+
+The simplest form returns a value from each branch:
 
 ```ch
 var status = if (age >= 18) "Adult" else "Minor"
+```
 
+You can use braces for multi-statement blocks. The last expression in the block is the value:
+
+```ch
+var result = if (x > 0) {
+    var temp = x * 2
+    temp + 1   // This is the return value
+} else {
+    0
+}
+```
+
+### Nested If Values
+
+If expressions can be nested for complex logic:
+
+```ch
+var i = 2
+var j = if(i > 0) if(i < 2) 10 else 20 else 30
+// When i=2: i>0 is true, i<2 is false, so j=20
+// When i=1: i>0 is true, i<2 is true, so j=10
+// When i=0: i>0 is false, so j=30
+```
+
+### Switch as a Value
+
+Switch expressions directly return the value after `=>`:
+
+```ch
 var dayName = switch (day) {
     1 => "Monday"
+    2 => "Tuesday"
+    3 => "Wednesday"
     default => "Unknown"
 }
+```
 
-var result = loop {
-    if (ready) break 42
+With braced cases for additional logic:
+
+```ch
+var multiplier = switch (mode) {
+    1 => {
+        printf("Fast mode\n")
+        10
+    }
+    2 => {
+        printf("Slow mode\n")
+        1
+    }
+    default => 5
 }
 ```
 
-### The `in` Expression
-The `in` expression is a concise way to check if a value matches one of several constants, similar to a simplified switch expression.
+### Nested If in Switch
+
+You can nest if expressions inside switch cases:
 
 ```ch
+var i = 2
+var use_tens = true
+var j = switch(i) {
+    1 => if(use_tens) 10 else 100
+    2 => if(use_tens) 20 else 200
+    default => 0
+}
+// Result: 20
+```
+
+### Nested Switch in If
+
+Similarly, switch expressions can be nested inside if:
+
+```ch
+var i = 2
+var j = if(i > 0) switch(i) {
+    1 => 10
+    2 => 20
+    default => 40
+} else 0
+// Result: 20
+```
+
+### Loop as a Value
+
+Use `break value` to return a value from a loop:
+
+```ch
+var i = 0
+var result = loop {
+    if (i == 5) break i    // Returns 5
+    i++
+}
+// result is 5
+```
+
+This is particularly useful for search patterns:
+
+```ch
+var found_index = loop {
+    if (current >= array_size) break -1
+    if (array[current] == target) break current
+    current++
+}
+```
+
+### Struct Values in Control Flow
+
+Control flow expressions work with struct types too:
+
+```ch
+struct Container { var data : int }
+
+var first = Container { data : 10 }
+var second = Container { data : 20 }
+var condition = true
+
+var selected = if(condition) first else second
+// selected.data is 10
+```
+
+## The `in` Expression
+
+The `in` expression provides a concise way to check if a value matches one of several constants. It works like a simplified switch expression that returns a boolean.
+
+### Basic Usage
+
+```ch
+// Check if a character is a vowel
 var is_vowel = char in 'a', 'e', 'i', 'o', 'u'
+
+// Store result in a const
+const x = 'a'
+const result = x in 'a', 'b', 'c'  // true
+```
+
+### Negation with `!in`
+
+Use `!in` to check if a value does NOT match any of the options:
+
+```ch
 if (x !in 1, 2, 3) {
     // x is not 1, 2, or 3
+    printf("x is something else\n")
 }
 ```
 
-## Loops
+### In Control Flow
 
-Chemical provides several ways to repeat code:
-
-- **For loop**: Standard `for(init; cond; step)`.
-- **While loop**: `while(cond)`.
-- **Do-While loop**: `do { ... } while(cond)`.
-- **Infinite loop**: Use `loop { ... }` for a loop that runs forever unless a `break` or `return` is encountered.
+The `in` expression integrates naturally with if statements:
 
 ```ch
-loop {
-    if (task_done()) break
+var char = 'e'
+if (char in 'a', 'e', 'i', 'o', 'u') {
+    printf("It's a vowel!\n")
+}
+
+if (status_code !in 200, 201, 204) {
+    printf("Request failed\n")
 }
 ```
+
+### Double Negation
+
+For complex conditions:
+
+```ch
+// This is true when x IS in the list
+return !('a' !in 'a', 'b', 'c')
+```
+
+> [!NOTE]
+> The `in` expression only works with **constant values**. The values after `in` must be compile-time constants, similar to switch case values.
+
