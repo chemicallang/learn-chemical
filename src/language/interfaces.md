@@ -25,6 +25,9 @@ impl Speaker for Robot {
 
 ## Implementation Patterns
 
+When you implement an interface using `impl` or by adding it to inheritance list, You must implement all its methods
+at once, otherwise compiler would throw the error for missing methods.
+
 ### Using `impl` Blocks
 
 The most common way to implement an interface:
@@ -52,30 +55,17 @@ struct Dog : Speaker {
 }
 ```
 
-### Implementation Before Declaration
-
-Chemical allows using interfaces before their full declaration (forward declaration is automatic):
-
-```ch
-impl SomeInterface for MyStruct {
-    // Implementation
-}
-
-// Interface can be declared later in the file
-interface SomeInterface {
-    func method(&self)
-}
-```
-
 ## Static Interfaces (`@static`)
 
-Static interfaces are resolved at compile time. They behave like C function declarations, but with the benefit of type safety. When you use a static interface, the compiler optimizes away any virtual dispatch.
+Static interfaces are resolved at compile time. They behave like C function declarations.
+
+Static interfaces can only be implemented once. Compiler throws an error if it finds multiple implementations for a static interface. 
 
 ### When to Use Static Interfaces
 
-- **Library Authors**: Declare expected functions that consumers must implement
+- **Library Authors**: Declare expected functions that consumers must implement once.
 - **C Interoperability**: Define callbacks or plugin interfaces
-- **Zero Overhead**: When you need interface-like behavior without runtime cost
+- **Zero Overhead**: When you need interface-like behavior without any runtime cost
 
 ```ch
 @static
@@ -105,7 +95,7 @@ func do_add(obj : &Adder, val : int) : int {
 
 ### Extension Functions on Static Interfaces
 
-You can add extension functions to static interfaces:
+You can add extension functions to static interfaces, but not on normal interfaces:
 
 ```ch
 @static
@@ -116,26 +106,6 @@ interface Summer {
 // Extension function accessible by any type implementing Summer
 func (s : &Summer) triple_sum() : int {
     return s.sum() * 3
-}
-```
-
-### Multi-Module Static Interfaces
-
-Static interfaces work across module boundaries:
-
-```ch
-// In library module
-@static 
-public interface Logger {
-    func log(&self, msg : *char)
-}
-
-// In consumer module
-struct FileLogger : Logger {
-    @override
-    func log(&self, msg : *char) {
-        // Write to file
-    }
 }
 ```
 
@@ -175,6 +145,8 @@ make_speak(dyn<Speaker>(robot))
 
 ### Dynamic Objects as Return Values
 
+dynamic objects are just references and become invalid as soon as the original object dies so should be used carefully.
+
 ```ch
 func create_speaker(robot_mode : bool) : dyn Speaker {
     if (robot_mode) {
@@ -187,6 +159,8 @@ func create_speaker(robot_mode : bool) : dyn Speaker {
 
 ### Dynamic Objects in Structs
 
+It's basically storing a reference, Be careful to not create a dangling reference.
+
 ```ch
 struct SpeakerContainer {
     var speaker : dyn Speaker
@@ -196,20 +170,6 @@ var container = SpeakerContainer {
     speaker : dyn<Speaker>(Robot { id : 10 })
 }
 container.speaker.say_hi()
-```
-
-### Arrays of Dynamic Objects
-
-```ch
-var speakers : []dyn Speaker = [
-    dyn<Speaker>(Robot { id : 1 }),
-    dyn<Speaker>(Dog { name : "Rex" }),
-    dyn<Speaker>(Robot { id : 2 })
-]
-
-for (var i = 0; i < 3; i++) {
-    speakers[i].say_hi()
-}
 ```
 
 ### Safety & Lifetimes
@@ -240,7 +200,7 @@ unsafe {
     speaker.say_hi()
     
     // Clean up when done
-    dealloc robot_ptr
+    destruct robot_ptr
 }
 ```
 

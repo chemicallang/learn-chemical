@@ -8,6 +8,7 @@
     - [Functions & Lambdas](language/functions.md)
     - [Generics](language/generics.md)
     - [Interfaces & Dyn](language/interfaces.md)
+    - [Enums](language/enums.md)
     - [Structs](language/structs.md)
     - [Unions](language/unions.md)
     - [Variants](language/variants.md)

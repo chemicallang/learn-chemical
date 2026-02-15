@@ -261,8 +261,7 @@ var x = new (ptr) MyStruct { a : 87, b : 33 }
 // Use x...
 x.a == 87
 
-// Free the raw memory (not the object)
-free(ptr)
+destruct ptr
 ```
 
 ### Placement `new` with Constructor
@@ -271,7 +270,7 @@ free(ptr)
 var ptr = malloc(sizeof(Player)) as *mut Player
 new (ptr) Player("Alice")
 ptr.name == "Alice"
-free(ptr)
+destruct ptr
 ```
 
 ### Placement `new` Without Variable
@@ -280,7 +279,7 @@ free(ptr)
 var ptr = malloc(sizeof(MyStruct)) as *mut MyStruct
 new (ptr) MyStruct { a : 12, b : 43 }
 ptr.a == 12  // Access directly through ptr
-free(ptr)
+destruct ptr
 ```
 
 ### Placement `new` with Variants
@@ -302,15 +301,16 @@ destruct ptr
 
 ## Deallocation
 
-- `dealloc ptr`: Frees memory allocated for non-struct types.
+- `dealloc ptr`: Frees memory allocated, only frees memory
 - `destruct ptr`: Calls the destructor for a struct and then frees the memory.
 
 ```ch
-// For simple types
 var x = new int
 dealloc x
 
 // For structs with destructors
 var p = new Player("Antigravity")
 destruct p  // Calls Player.@delete then frees memory
+
+// warning: if you use dealloc with p, destructor won't be called
 ```
