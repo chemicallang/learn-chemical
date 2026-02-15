@@ -28,7 +28,11 @@ jobs:
       - name: Set up Chemical
         run: |
           curl -sSL https://raw.githubusercontent.com/chemicallang/chemical/main/scripts/download.sh | bash
-          echo "$HOME/.chemical" >> $GITHUB_PATH
+          if [ -d "/opt/chemical" ]; then
+            echo "/opt/chemical" >> $GITHUB_PATH
+          else
+            echo "$HOME/.chemical" >> $GITHUB_PATH
+          fi
 
       - name: Build docs generator
         run: chemical chemical.mod -o docs.exe
