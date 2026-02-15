@@ -25,11 +25,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Chemical
-        shell: bash
-        run: |
-          curl -sSL https://raw.githubusercontent.com/chemicallang/chemical/main/scripts/download.sh | bash
-          echo "$USERPROFILE/.chemical" >> $GITHUB_PATH
+      - name: Setup Chemical
+        uses: chemicallang/action@v1
+        with:
+          version: 'latest'
 
       - name: Build docs generator
         shell: bash
