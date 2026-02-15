@@ -25,16 +25,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
+      - name: Set up Chemical
+        run: |
+          curl -sSL https://raw.githubusercontent.com/chemicallang/chemical/main/scripts/download.sh | bash
+          echo "$HOME/.chemical" >> $GITHUB_PATH
 
-      - name: Install mdBook
-        run: cargo install mdbook --locked
+      - name: Build docs generator
+        run: chemical chemical.mod -o docs.exe
 
-      - name: Build mdBook site
-        run: mdbook build
+      - name: Build documentation
+        run: ./docs.exe src/SUMMARY.md
 
       - name: Configure Pages
         uses: actions/configure-pages@v3
@@ -42,7 +42,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./book
+          path: ./src/book
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
