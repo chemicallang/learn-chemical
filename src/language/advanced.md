@@ -58,7 +58,7 @@ struct Pair {
     var a : int
     var b : int
 
-    @constructor
+    @make
     comptime func from_sum(sum : %literal<int>) {
         return Pair {
             a : sum / 2,
@@ -66,7 +66,7 @@ struct Pair {
         }
     }
 
-    @constructor
+    @make
     comptime func delegated(use_first : bool) {
         if (use_first) {
             return intrinsics::wrap(first())
@@ -75,8 +75,8 @@ struct Pair {
         }
     }
 
-    @constructor func first() { init { a(15) b(15) } }
-    @constructor func second() { init { a(20) b(20) } }
+    @make func first() { return { a : 15, b : 15 } }
+    @make func second() { return { a : 20, b :20 } }
 }
 ```
 
@@ -86,7 +86,7 @@ struct Pair {
 - `%runtime<T>`: Represents a value that will only be available at runtime, but can be passed through comptime logic.
 
 ```ch
-@constructor
+@make
 comptime func logger(thing : %runtime<*mut int>) {
     // Delegate to an actual runtime constructor
     return intrinsics::wrap(actual_constructor(thing));
@@ -97,16 +97,16 @@ comptime func logger(thing : %runtime<*mut int>) {
 
 Chemical provides a set of low-level compiler intrinsics via the `intrinsics` namespace. These are mostly used inside `comptime` blocks.
 
-| Intrinsic | Description |
-|-----------|-------------|
-| `intrinsics::size(str)` | Returns the length of a string literal at compile-time. |
-| `intrinsics::get_line_no()` | Returns the current source line number. |
-| `intrinsics::get_caller_line_no()` | Returns the line number of the caller. |
-| `intrinsics::get_module_name()` | Returns the name of the current module. |
-| `intrinsics::get_module_scope()` | Returns the current module's scope path. |
-| `intrinsics::get_target()` | Returns information about the compilation target. |
+| Intrinsic                           | Description                                                              |
+|-------------------------------------|--------------------------------------------------------------------------|
+| `intrinsics::size(str)`             | Returns the length of a string literal at compile-time.                  |
+| `intrinsics::get_line_no()`         | Returns the current source line number.                                  |
+| `intrinsics::get_caller_line_no()`  | Returns the line number of the caller.                                   |
+| `intrinsics::get_module_name()`     | Returns the name of the current module.                                  |
+| `intrinsics::get_module_scope()`    | Returns the current module's scope path.                                 |
+| `intrinsics::get_target()`          | Returns information about the compilation target.                        |
 | `intrinsics::get_child_fn<T>(name)` | Retrieves a function pointer for a member function by its name (string). |
-| `intrinsics::wrap(call)` | Wraps a runtime call to be returned from a comptime context. |
+| `intrinsics::wrap(call)`            | Wraps a runtime call to be returned from a comptime context.             |
 
 ### Example: Reflection-like Function Access
 

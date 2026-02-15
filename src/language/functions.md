@@ -89,7 +89,7 @@ func create_counter() : std::function<() => int> {
 
 ### Capture Types
 
-#### Value Capture (`|var|`)
+#### Value Capture (`|val|`)
 
 Copies the variable's value at the time of lambda creation:
 
@@ -110,6 +110,8 @@ var result = take_cap_func(|&temp|() => {
     return *temp  // Must dereference to access value
 })
 ```
+
+If you capture anything by reference, and the original dies, accessing it through the reference would result in a memory exception
 
 #### Mutable Reference Capture (`|&mut var|`)
 
@@ -211,7 +213,7 @@ var s = new MyStruct { value : 32 }
 var result = take_cap_func(|s|() => { 
     return s.double() 
 })
-dealloc s
+destruct s
 ```
 
 ### Nested Member Access
@@ -225,29 +227,6 @@ var container = new Container { value : MyStruct { value : 33 } }
 var result = take_cap_func(|container|() => { 
     return container.value.double() 
 })
-```
-
-## Lambdas Returning Structs
-
-Capturing lambdas can return struct values:
-
-```ch
-var f : std::function<() => MyStruct> = () => {
-    return MyStruct { value : 992 }
-}
-var x = f()  // x.value is 992
-```
-
-## Lambdas and `auto`
-
-You can use type inference for local lambdas, but be aware of the resulting type:
-
-```ch
-// Result is a raw function pointer (no capture allowed)
-const simple = () => { printf("hi"); }
-
-// Result is a std::function (captures allowed)
-const closure = |x| () => { return x; }
 ```
 
 ## Passing Functions
@@ -265,7 +244,7 @@ func do_something(callback : std::function<() => void>) {
 
 Extension functions allow you to add new functionality to existing structs, variants, or interfaces without modifying their original definition. They are defined by specifying the receiver type in parentheses before the function name.
 
-**Extension functions can only be called through references.**
+**Extension functions can only be defined on references to structs/variants/unions.**
 
 ```ch
 struct Point {
@@ -356,6 +335,10 @@ func <T : Summer> (item : &mut T) sum_twice() : int {
     return item.sum() * 2
 }
 ```
+
+These extension functions are generic, if you want to apply non-generic extensions to interfaces, the interface must be
+static using the `@static` annotation, otherwise compiler would complain. In other words, non-generic extension functions can
+only be added to static interfaces
 
 ### Extension Functions on Variants
 

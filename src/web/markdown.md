@@ -38,5 +38,3 @@ var current_version = "1.2.3"
 To use `#md`, you typically need the `md_cbi` module in your project. It handles the transformation from Markdown syntax to HTML tags.
 
 ---
-
-Next: **[Lab Overview](../build/lab.md)**

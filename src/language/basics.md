@@ -321,7 +321,7 @@ The `in` expression provides a concise way to check if a value matches one of se
 
 ```ch
 // Check if a character is a vowel
-var is_vowel = char in 'a', 'e', 'i', 'o', 'u'
+var is_vowel = c in 'a', 'e', 'i', 'o', 'u'
 
 // Store result in a const
 const x = 'a'
@@ -344,8 +344,8 @@ if (x !in 1, 2, 3) {
 The `in` expression integrates naturally with if statements:
 
 ```ch
-var char = 'e'
-if (char in 'a', 'e', 'i', 'o', 'u') {
+var c = 'e'
+if (c in 'a', 'e', 'i', 'o', 'u') {
     printf("It's a vowel!\n")
 }
 

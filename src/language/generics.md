@@ -7,10 +7,6 @@ Chemical provides a powerful generics system that allows you to write reusable, 
 Generic parameters are specified within angle brackets `< >` before the function name or after the type name.
 
 ```ch
-func <T> identity(value : T) : T {
-    return value
-}
-
 struct Box<T> {
     var item : T
 }
@@ -76,10 +72,10 @@ Generic structs can be stored in other structs:
 struct Container {
     var pair : PairGen<short, short, short>
     
-    @constructor
+    @make
     func make() {
-        init {
-            pair(PairGen<short, short, short> { a : 33, b : 10 })
+        return {
+            pair : PairGen<short, short, short> { a : 33, b : 10 }
         }
     }
 }
@@ -113,9 +109,7 @@ When a function argument provides enough information, the inferred type takes pr
 
 ```ch
 func <T = short> give_me_size() : T {
-    if(T is short) { return 2 }
-    else if(T is int) { return 4 }
-    else { return 8 }
+    if(T is short) { return 2 } else if(T is int) { return 4 } else { return 8 }
 }
 
 // If result is assigned to an int, T is inferred as int (not default short)
@@ -181,11 +175,17 @@ Type checks work inside generic struct methods:
 ```ch
 struct TypeChecker<T> {
     func get_integer() : T {
-        if(T is char || T is uchar) { return 1 }
-        else if(T is short || T is ushort) { return 2 }
-        else if(T is int || T is uint) { return 4 }
-        else if(T is bigint || T is ubigint) { return 8 }
-        else { return 0 }
+        if(T is char || T is uchar) { 
+            return 1 
+        } else if(T is short || T is ushort) { 
+            return 2 
+        } else if(T is int || T is uint) { 
+            return 4 
+        } else if(T is bigint || T is ubigint) { 
+            return 8 
+        } else { 
+            return 0 
+        }
     }
 }
 ```

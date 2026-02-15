@@ -50,5 +50,3 @@ if (fs::is_directory("src")) {
 ```
 
 ---
-
-Next: **[json: Data Serialization](json.md)**

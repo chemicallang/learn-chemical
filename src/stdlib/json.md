@@ -46,5 +46,3 @@ var output = builder.to_string()
 - **Arrays**: Mapped to `std::vector<JsonValue>`.
 
 ---
-
-Next: **[net & http: Networking](net_http.md)**

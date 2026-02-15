@@ -86,5 +86,3 @@ if (resp is std::Option.Some) {
 > All networking operations are synchronous by default but can be easily and safely offloaded to a `ThreadPool` for handling multiple concurrent connections.
 
 ---
-
-Next: **[atomic: Thread Safety](atomic.md)**

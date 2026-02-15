@@ -176,7 +176,7 @@ Use triple quotes for multiline strings:
 var multi = """First line
 Second line
 Third line"""
-strlen(multi)  // Includes newline characters
+strlen(multi)
 ```
 
 ### String Arrays
