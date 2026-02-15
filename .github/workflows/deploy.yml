@@ -29,9 +29,25 @@ jobs:
         shell: bash
         run: |
           curl -sSL https://raw.githubusercontent.com/chemicallang/chemical/main/scripts/download.sh | bash
-          # On Windows runner, USERPROFILE is usually C:\Users\runneradmin
-          # The script installs to $USERPROFILE/.chemical
-          echo "$USERPROFILE/.chemical" >> $GITHUB_PATH
+          
+          # Find where it was installed. 
+          # Standard locations are /opt/chemical (Git Bash) or $USERPROFILE/.chemical
+          CH_DIR=""
+          if [ -d "/opt/chemical" ]; then
+            CH_DIR="/opt/chemical"
+          elif [ -d "$USERPROFILE/.chemical" ]; then
+            CH_DIR="$USERPROFILE/.chemical"
+          elif [ -d "$HOME/.chemical" ]; then
+            CH_DIR="$HOME/.chemical"
+          fi
+          
+          if [ -n "$CH_DIR" ]; then
+            echo "Found Chemical at $CH_DIR"
+            echo "$CH_DIR" >> $GITHUB_PATH
+          else
+            echo "ERROR: Could not locate Chemical installation directory."
+            exit 1
+          fi
 
       - name: Build docs generator
         shell: bash
