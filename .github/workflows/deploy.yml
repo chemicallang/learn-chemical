@@ -13,7 +13,7 @@ on:
 
 jobs:
   build-and-publish:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     # 👇 this is the key bit
     environment:
@@ -26,18 +26,19 @@ jobs:
           fetch-depth: 0
 
       - name: Set up Chemical
+        shell: bash
         run: |
           curl -sSL https://raw.githubusercontent.com/chemicallang/chemical/main/scripts/download.sh | bash
-          if [ -d "/opt/chemical" ]; then
-            echo "/opt/chemical" >> $GITHUB_PATH
-          else
-            echo "$HOME/.chemical" >> $GITHUB_PATH
-          fi
+          # On Windows runner, USERPROFILE is usually C:\Users\runneradmin
+          # The script installs to $USERPROFILE/.chemical
+          echo "$USERPROFILE/.chemical" >> $GITHUB_PATH
 
       - name: Build docs generator
+        shell: bash
         run: chemical chemical.mod -o docs.exe
 
       - name: Build documentation
+        shell: bash
         run: ./docs.exe src/SUMMARY.md
 
       - name: Configure Pages
