@@ -1,12 +1,12 @@
 # Web Development Overview
 
-Chemical takes a unique "CBI" (Component-Based Interface) approach to web development. It acts as a bridge between high-performance systems code and modern web frontends.
+Chemical takes a unique plugin approach to web development. It acts as a bridge between high-performance systems code and modern web frontends.
 
-## What is a CBI?
+## Compiler Plugins
 
-A **Component-Based Interface** is a compiler-level macro system (using the `#` prefix) that allows you to embed other languages directly inside Chemical. 
+The compiler allows hooking into its lexing, parsing and code generation phases using compiler plugins
 
-Instead of treating HTML or JS as strings, Chemical understands them at compile time.
+Instead of treating HTML or JS as strings, Chemical understands them at compile time using compiler plugins.
 
 ## The Astro-like Model
 
@@ -20,10 +20,8 @@ Chemical operates similarly to the [Astro framework](https://astro.build/):
 The core of web building in Chemical is the `HtmlPage` struct (found in the `page` module). It stores the state of a single web page.
 
 ```ch
-import page
-
 func create_my_site() {
-    var p = page::HtmlPage()
+    var p = HtmlPage()
     p.defaultPrepare() // sets viewport, charset, etc.
     p.appendTitle("My Chemical App")
     
@@ -33,7 +31,7 @@ func create_my_site() {
 }
 ```
 
-## Available CBI Macros
+## Available Macros
 
 Macros in Chemical are categorized by their placement and scope.
 
@@ -46,9 +44,9 @@ These are used inside functions to generate content dynamically. They typically 
 - **`#html { ... }`**: For static HTML structure.
 - **`#css { ... }`**: For styling (can return a class name).
 - **`#js { ... }`**: For raw client-side JavaScript.
-- **`#md { ... }`**: For embedding Markdown directly.
+- **`#md { ... }`**: For embedding Markdown directly (converted to html).
 
 > [!IMPORTANT]
-> To use these macros, you must import the corresponding CBI module (e.g., `import html_cbi`) in your `chemical.mod` file.
+> To use these macros, you must import the corresponding module (e.g., `import html_cbi`) in your `chemical.mod` file.
 
 ---

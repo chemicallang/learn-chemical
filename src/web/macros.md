@@ -1,77 +1,68 @@
 # CBI Macros & Scopes
 
-Chemical uses **Component-Based Interface (CBI)** macros to bridge systems programming and web development. To use these macros, you must first configure your project dependencies and understand where each macro can be placed.
+Chemical uses macros to bridge systems programming and web development. To use these macros, you must first configure your project dependencies and understand where each macro can be placed.
 
 ## Configuration
 
-Before using any macro, you must import the corresponding CBI module in your `chemical.mod` file. These modules provide the bridge logic for the compiler to process the special `#` blocks.
+Before using any macro, you must import the corresponding module in your `chemical.mod` file. These modules provide the bridge logic for the compiler to process the special `#` blocks.
 
 ```ch
 # chemical.mod
 module my_website
-
 source "src"
-import html_cbi   # Required for #html, #css, #js
+import std
+import page
+import html_cbi   # Required for #html
+import css_cbi    # Required for #css
+import js_cbi     # Required for #js
 import react_cbi  # Required for #react
+import preact_cbi # Required for #preact
 import solid_cbi  # Required for #solid
 ```
 
-## Macro Scopes
-
-Macros in Chemical are categorized into **Top-Level** and **Local** macros.
-
-### Top-Level Macros
-
-These are defined at the **file scope** (outside of any function). They are primarily used to define independent components.
-
-- **`#react`**: Defines a React component.
-- **`#solid`**: Defines a SolidJS component.
-- **`#preact`**: Defines a Preact component.
+## Create a static website
 
 ```ch
-#react MyButton(label : *char) {
-    return <button className="btn">{label}</button>
-}
-```
-
-### Local Macros
-
-These are used **inside functions** or as **values**. They require a `page` variable of type `&mut HtmlPage` to be available in the local scope, as the compiler automatically calls `.append(...)` methods on it.
-
-- **`#html`**: Appends HTML content to the page.
-- **`#css`**: Appends CSS and returns a unique class name as a `*char`.
-- **`#js`**: Appends client-side JavaScript.
-- **`#md`**: Converts Markdown to HTML and appends it.
-
-```ch
-public func render_page(p : &mut HtmlPage) {
-    var page = p
+func staticHtml(page : &mut HtmlPage, name : &std::string_view) {
     
-    var my_class = #css {
-        color: blue;
-        padding: 10px;
+    var cn = #css {
+        color : red;        
+        // you can also use global styling here
+        .something {
+            color : blue;
+        }
     }
     
     #html {
-        <div class="${my_class}">
-            <h1>Hello World</h1>
-        </div>
+        <span class={cn}>Hello {name}</span>
     }
+    
+    // NOTE: 
+    //  - you cannot write javascript in the braces, the braces expect chemical expressions
+    //  - in css, js ${} is used for embeddeding chemical expressions
+    //  - this is just like string interpolation
+
+
+    // now lets see js macro usage
+    // anything you write in a js macro, the output goes to a script that is loaded at the end of the body
+    #js {
+        // you can write javascript here
+    }
+
+}
+
+func main() : int {
+    var p = HtmlPage()
+    p.defaultPrepare() // sets viewport, charset, etc.
+    p.appendTitle("My Chemical App")
+    staticHtml(p, "John")
+    p.writeToDirectory("out", "index") // generates out/index.html, index.css, etc.
+    // you can also use p.toString() which generates a std::string
+    return 0;
 }
 ```
 
-> [!NOTE]
-> String literals in Chemical are `*char`. You can pass them directly to `printf` or CBI macros without calling `.data()`.
+When you first compile the program, it will take time, since chemical will compile plugins for the first time.
 
-## Passing Values
-
-You can interpolate Chemical values into any CBI block using the `${expression}` syntax.
-
-```ch
-var count = 5
-#html {
-    <p>The count is: ${count}</p>
-}
-```
 
 ---

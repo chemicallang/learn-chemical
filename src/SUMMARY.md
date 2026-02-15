@@ -18,9 +18,9 @@
     - [Namespaces](language/namespaces.md)
     - [Advanced Features](language/advanced.md)
 
-- [Web Development (CBI)]()
+- [Web Development]()
     - [Overview](web/overview.md)
-    - [CBI Macros & Scopes](web/macros.md)
+    - [Macros & Scopes](web/macros.md)
     - [HTML, CSS & JavaScript](web/html_css_js.md)
     - [Frameworks (React/Solid)](web/frameworks.md)
     - [Component Mounting](web/mounting.md)

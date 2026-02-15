@@ -1,6 +1,7 @@
 # Advanced Features
 
-Chemical includes powerful features for library authors and performance-critical applications.
+Chemical includes powerful features for library authors and performance-critical applications. However, this stuff
+is experimental.
 
 ## Operator Overloading
 
@@ -8,9 +9,7 @@ You can define how symbols like `+`, `-`, `*`, etc., work for your custom struct
 
 ### Example: Vector Addition
 ```ch
-using namespace core::ops
-
-struct Vec2 {
+struct Vec2 : core::ops::Add {
     var x : float
     var y : float
     

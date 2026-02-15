@@ -13,7 +13,7 @@ You can inject Chemical variables into your HTML using the `${}` syntax.
 public func welcome(page : &mut HtmlPage, user_name : *char) {
     #html {
         <div class="welcome">
-            <h1>Welcome, ${user_name}!</h1>
+            <h1>Welcome, {user_name}!</h1>
             <p>This is a static HTML block.</p>
         </div>
     }
@@ -33,7 +33,7 @@ public func render_styled_div(page : &mut HtmlPage) {
     }
     
     #html {
-        <div class="${my_class}">
+        <div class={my_class}>
             Styled with Chemical CSS!
         </div>
     }

@@ -4,13 +4,17 @@ Chemical allows you to use modern JavaScript frameworks for building interactive
 
 ## Configuring Dependencies
 
-Before using a framework macro, you must import the corresponding CBI in your `chemical.mod` file.
+Before using a framework macro, you must import the corresponding plugin in your `chemical.mod` file.
 
 ```ch
 # chemical.mod
 module my_app
 
 source "src"
+
+import std
+import page
+import html_cbi   # Required for #html
 import react_cbi  # Required for #react
 import solid_cbi  # Required for #solid
 ```
@@ -22,8 +26,8 @@ Components are defined at the **top level** of your file (outside of any functio
 ```ch
 // This is a React component
 #react Counter(initial_count : int) {
-    const [count, setCount] = useState(initial_count || 0);
-    
+    // you can write any javascript and react code here
+    const [count, setCount] = useState(initial_count || 0);    
     return (
         <div>
             <p>Count: {count}</p>
@@ -39,7 +43,7 @@ To include a component in your page, you must mount it using `<Component />` syn
 
 ```ch
 public func build_page(page : &mut HtmlPage) {
-    page.defaultReactSetup(); // Injects framework runtime
+    page.defaultReactSetup(); // Injects framework runtime (basically CDN links)
     
     #html {
         <div id="content">
@@ -61,12 +65,12 @@ When a component is mounted:
 
 ## Framework Setup Functions
 
-Each framework requires a setup call on the `HtmlPage` to include its runtime (usually from a CDN in development).
+Each framework requires a setup call on the `HtmlPage` to include its runtime (usually from a CDN).
 
-| Framework | Setup Method |
-| :--- | :--- |
-| **React** | `page.defaultReactSetup()` |
-| **SolidJS** | `page.defaultSolidSetup()` |
-| **Preact** | `page.defaultPreactSetup()` |
+| Framework   | Setup Method                |
+|:------------|:----------------------------|
+| **React**   | `page.defaultReactSetup()`  |
+| **SolidJS** | `page.defaultSolidSetup()`  |
+| **Preact**  | `page.defaultPreactSetup()` |
 
 ---

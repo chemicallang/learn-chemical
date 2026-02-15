@@ -45,8 +45,4 @@ You can pass children to components or use them within layouts to structure your
 }
 ```
 
-## Scoped Styles
-
-If a component uses an internal `#css` block, those styles are automatically scoped and included in the page's generated CSS file.
-
 ---
