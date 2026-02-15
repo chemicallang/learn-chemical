@@ -26,9 +26,10 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Chemical
-        uses: chemicallang/action@v1
+        uses: chemicallang/action@v1.1
         with:
           version: 'latest'
+          variant: 'tcc'
 
       - name: Build docs generator
         shell: bash
