@@ -1,4 +1,4 @@
-module docs
+application docs
 
 source "main.ch"
 
