@@ -10,6 +10,7 @@ echo "Generating documentation..."
   --logo assets/Logo512.png \
   --description "Chemical Programming Language Documentation - A modern systems programming language" \
   --author "Chemical Lang Team" \
-  --keywords "chemical,programming,language,compiler,systems,documentation"
+  --keywords "chemical,programming,language,compiler,systems,documentation" \
+  --base-url "https://docs.chemicallang.com"
 
 echo "Documentation built successfully in ./book"

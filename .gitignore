@@ -3,3 +3,5 @@ src/book
 build
 docs.def
 docs.exe
+docs.ilk
+docs.pdb
