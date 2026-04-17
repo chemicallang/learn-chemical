@@ -40,18 +40,41 @@ impl Speaker for Robot {
 }
 ```
 
-### Inline Implementation
+### Nested Implementation
 
-You can also implement interfaces directly when defining a struct using the `:` syntax:
+You can also implement interfaces directly when defining a struct
 
 ```ch
-struct Dog : Speaker {
+struct Dog {
     var name : *char
     
-    @override
-    func say_hi(&self) {
-        printf("Woof! I'm %s\n", name)
+    impl Speaker for Dog {
+        func say_hi(&self) {
+            printf("Woof! I'm %s\n", name)
+        }    
     }
+    
+}
+```
+
+The reason this syntax exists, is because chemical at the moment does not support generic impl declarations, For example
+You cannot write
+
+```ch
+// ❌ This is invalid
+interface Animal<T> {}
+struct Dog<T> {}
+impl <T> Animal<T> for Dog<T> {}
+```
+
+You can do this however
+
+```ch
+interface Animal<T> {}
+struct Dog<T> {
+    // shared T generic parameter
+    // implementation is instantiated (monomorphized) when the struct is.
+    impl Animal<T> for Dog<T> {}
 }
 ```
 
