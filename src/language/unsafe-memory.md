@@ -205,12 +205,14 @@ Chemical provides keywords for manual memory management within unsafe blocks:
 // Allocate memory for a type
 var x = new int
 *x = 13
+// dealloc only calls free, you can also use delete
 dealloc x
 
 // Works with const too
 const x = new int
 *x = 13
-dealloc x
+// int does not have a destructor, so delete only performs free
+delete x
 ```
 
 ### `new` - Pointer Types
@@ -221,7 +223,7 @@ var y = 13
 *x = &y
 const ptr = *x
 *ptr == 13
-dealloc x
+delete x
 ```
 
 ### `new` - With Struct Types
@@ -231,12 +233,15 @@ dealloc x
 var x = new MyStruct
 x.a = 234
 x.b = 111
+delete x
 
 // Allocate with initialization
 var x = new MyStruct { a : 10, b : 20 }
+delete x
 
 // Allocate with constructor call
 var x = new Player("Antigravity")
+delete x
 ```
 
 ### `new` - Namespaced Types
@@ -245,6 +250,7 @@ var x = new Player("Antigravity")
 var x = new namespace::MyStruct
 x.a = 821
 x.b = 2834
+delete x
 ```
 
 ### Placement `new`
@@ -261,7 +267,8 @@ var x = new (ptr) MyStruct { a : 87, b : 33 }
 // Use x...
 x.a == 87
 
-destruct ptr
+// destruct + free
+delete ptr
 ```
 
 ### Placement `new` with Constructor
@@ -270,7 +277,8 @@ destruct ptr
 var ptr = malloc(sizeof(Player)) as *mut Player
 new (ptr) Player("Alice")
 ptr.name == "Alice"
-destruct ptr
+// destruct + free
+delete ptr
 ```
 
 ### Placement `new` Without Variable
@@ -279,7 +287,8 @@ destruct ptr
 var ptr = malloc(sizeof(MyStruct)) as *mut MyStruct
 new (ptr) MyStruct { a : 12, b : 43 }
 ptr.a == 12  // Access directly through ptr
-destruct ptr
+// destruct + delete
+delete ptr
 ```
 
 ### Placement `new` with Variants
@@ -296,13 +305,34 @@ new (ptr) OptInt.Some(763)
 var Some(value) = *ptr else return
 value == 763
 
-destruct ptr
+// destruct + free
+delete ptr
+```
+
+### Reusing memory using placement `new`
+
+`destruct` and then `placement new` can be used to re-initialize a pointer to a struct. It allows reusing already
+allocated memory, instead of using `malloc` or `new` to allocate again.
+
+```ch
+var ptr = malloc(sizeof(MyStruct)) as *mut MyStruct
+new (ptr) MyStruct { a : 12, b : 43 }
+
+// destruct MyStruct, without calling free
+destruct ptr;
+
+// reinitialize the `ptr`
+new (ptr) MyStruct { a : 10, b : 98 }
+
+// finally destruct + delete
+delete ptr;
 ```
 
 ## Deallocation
 
 - `dealloc ptr`: Frees memory allocated, only frees memory
-- `destruct ptr`: Calls the destructor for a struct and then frees the memory.
+- `destruct ptr`: Calls the destructor for a struct (does not free the memory)
+- `delete ptr` : Calls the destructor and then frees the memory
 
 ```ch
 var x = new int
@@ -310,7 +340,8 @@ dealloc x
 
 // For structs with destructors
 var p = new Player("Antigravity")
-destruct p  // Calls Player.@delete then frees memory
+delete p  // Calls Player's destructor and then free
 
 // warning: if you use dealloc with p, destructor won't be called
+// warning: if you use destruct with p, free won't be called
 ```

@@ -213,7 +213,8 @@ var s = new MyStruct { value : 32 }
 var result = take_cap_func(|s|() => { 
     return s.double() 
 })
-destruct s
+// destruct + free
+delete s
 ```
 
 ### Nested Member Access

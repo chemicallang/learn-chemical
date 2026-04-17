@@ -223,7 +223,7 @@ unsafe {
     speaker.say_hi()
     
     // Clean up when done
-    destruct robot_ptr
+    delete robot_ptr
 }
 ```
 
