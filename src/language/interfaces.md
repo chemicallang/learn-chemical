@@ -98,8 +98,8 @@ interface Adder {
 
 struct Number : Adder {
     var value : int
-    
-    @override
+}
+impl Adder for Number {
     func add(&self, other : int) : int {
         return value + other
     }

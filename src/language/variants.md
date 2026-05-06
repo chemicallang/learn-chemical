@@ -102,7 +102,7 @@ s.multiply()  // 200
 
 ### Variant Interface Implementation
 
-Variants can implement interfaces with `@override`:
+Variants can implement interfaces with `impl`:
 
 ```ch
 interface Giver {
@@ -112,8 +112,8 @@ interface Giver {
 variant OptionalInt : Giver {
     None()
     Some(value : int)
-    
-    @override
+}
+impl Giver for OptionalInt {
     func give(&self) : int {
         switch(self) {
             None() => return -1;

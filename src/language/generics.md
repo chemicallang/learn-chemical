@@ -229,11 +229,12 @@ interface GenAddInterface<Output, Rhs = Self> {
     func add(&self, rhs : Rhs) : Output
 }
 
-struct Point : GenAddInterface<Point, Point> {
+struct Point {
     var a : int
     var b : int
-    
-    @override
+
+}
+impl GenAddInterface<Point, Point> for Point {
     func add(&self, rhs : Point) : Point {
         return Point {
             a : a + rhs.a,

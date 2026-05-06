@@ -1,4 +1,3 @@
-# Set this to your existing Cloudflare Worker name
 name = "learn-chemical"
 compatibility_date = "2024-01-01"
 
