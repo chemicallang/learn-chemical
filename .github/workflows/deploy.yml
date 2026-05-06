@@ -1,24 +1,15 @@
 # .github/workflows/deploy.yml
-name: Publish mdBook to GitHub Pages
-
-permissions:
-  contents: read    # for checkout
-  pages: write      # to publish to GitHub Pages
-  id-token: write   # required by configure-pages
+name: Deploy to Cloudflare Workers
 
 on:
   push:
     branches:
-      - main       # or your default branch
+      - main
   workflow_dispatch:
 
 jobs:
-  build-and-publish:
+  build-and-deploy:
     runs-on: windows-latest
-
-    # 👇 this is the key bit
-    environment:
-      name: github-pages
 
     steps:
       - name: Checkout repository
@@ -40,15 +31,15 @@ jobs:
         shell: bash
         run: bash build.sh
 
-      - name: Configure Pages
-        uses: actions/configure-pages@v3
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          path: ./book
+          node-version: '20'
 
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install wrangler
+        run: npm install -g wrangler
+
+      - name: Deploy to Cloudflare Workers
+        run: wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
