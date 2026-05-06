@@ -96,7 +96,7 @@ interface Adder {
     func add(&self, other : int) : int
 }
 
-struct Number : Adder {
+struct Number {
     var value : int
 }
 impl Adder for Number {
