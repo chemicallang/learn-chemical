@@ -96,6 +96,23 @@ e.id == -1 // true
 
 ## Operators
 
+### Pointers and References
+In Chemical, a raw pointer is taken via `&raw thing` and a reference via `&thing`
+
+```ch
+var i = 0
+
+// taking pointers
+var j = &raw i             // a pointer to int (*int)
+var j2 = &raw mut i        // a mutable pointer to int (*mut int)
+
+// taking references
+var r = &i                 // a reference to int (&int)
+var r2 = &mut i            // a mutable reference to int (&mut int)
+```
+
+Assigning to both (references or pointers) requires a dereference
+
 ### Increment and Decrement
 Chemical supports C++ style increment (`++`) and decrement (`--`) operators.
 - **Prefix**: `++i`, `--i` (increments/decrements then returns the new value).
@@ -109,7 +126,7 @@ var k = i-- // k is 3, i is now 2
 
 // Works with pointers too
 var arr = [10, 20, 30]
-var ptr = &arr[0]
+var ptr = &raw arr[0]
 ptr++    // ptr now points to arr[1]
 ```
 

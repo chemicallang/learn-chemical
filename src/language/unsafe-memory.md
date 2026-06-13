@@ -21,7 +21,7 @@ are taken implicitly in chemical. If the type is a reference, you just need to p
 
 ```ch
 var i = 2
-var j = &mut i    // Mutable pointer to i
+var j = &raw mut i    // Mutable pointer to i
 *j = *j + 1       // Modify through reference
 // i is now 3
 ```
@@ -30,8 +30,8 @@ var j = &mut i    // Mutable pointer to i
 
 ```ch
 var i = 123
-var j = &i
-var k = &j
+var j = &raw i
+var k = &raw j
 **k == 123  // Dereference twice to get original value
 ```
 
@@ -39,7 +39,7 @@ var k = &j
 
 ```ch
 var i = 234
-var k = *&i    // Dereference immediately after taking address
+var k = *&raw i    // Dereference immediately after taking address
 // k == 234
 ```
 
@@ -47,8 +47,8 @@ var k = *&i    // Dereference immediately after taking address
 
 ```ch
 var i = 345
-var j = &i
-var k = &*j    // Address of dereferenced value
+var j = &raw i
+var k = &raw *j    // Address of dereferenced value
 // *k == 345
 ```
 
@@ -63,7 +63,7 @@ Chemical supports standard pointer arithmetic within `unsafe` blocks.
 
 ```ch
 var arr = [10, 20, 30, 40, 50]
-var ptr = &arr[0]
+var ptr = &raw arr[0]
 
 *ptr       // 10
 ptr++      // Move to next element
@@ -80,8 +80,8 @@ Calculate the distance between two pointers:
 
 ```ch
 var arr = [10, 20, 30, 40, 50]
-var ptr1 = &arr[0] + 2    // Points to arr[2]
-var ptr2 = &arr[0]        // Points to arr[0]
+var ptr1 = &raw arr[0] + 2    // Points to arr[2]
+var ptr2 = &raw arr[0]        // Points to arr[0]
 var diff = ptr1 - ptr2    // 2
 ```
 
@@ -91,14 +91,14 @@ Compare pointers to determine relative positions:
 
 ```ch
 var arr = [10, 20, 30, 40, 50]
-var ptr1 = &arr[0] + 2
-var ptr2 = &arr[0]
+var ptr1 = &raw arr[0] + 2
+var ptr2 = &raw arr[0]
 
 ptr1 > ptr2   // true
 ptr2 < ptr1   // true
 ptr1 == ptr2  // false
 
-var ptr3 = &arr[0] + 2
+var ptr3 = &raw arr[0] + 2
 ptr1 == ptr3  // true (same address)
 ```
 
@@ -108,7 +108,7 @@ Access memory like an array through pointers:
 
 ```ch
 var arr = [10, 20, 30]
-var ptr = &arr[0]
+var ptr = &raw arr[0]
 ptr[0]   // 10
 ptr[1]   // 20
 ptr[2]   // 30
@@ -122,7 +122,7 @@ Access struct members after pointer arithmetic:
 struct Point { var a : int; var b : int }
 
 var p = Point { a : 22, b : 33 }
-const j = &p
+const j = &raw p
 const k = j + 1
 const d = k - 1
 d.a == 22 && d.b == 33  // true
@@ -220,7 +220,7 @@ delete x
 ```ch
 var x = new *int
 var y = 13
-*x = &y
+*x = &raw y
 const ptr = *x
 *ptr == 13
 delete x
@@ -339,7 +339,7 @@ var x = new int
 dealloc x
 
 // For structs with destructors
-var p = new Player("Antigravity")
+var p = new Player("Alex")
 delete p  // Calls Player's destructor and then free
 
 // warning: if you use dealloc with p, destructor won't be called

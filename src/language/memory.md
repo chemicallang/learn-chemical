@@ -16,7 +16,7 @@ struct Resource {
 }
 
 func process() {
-    var res = Resource { data : std::malloc(1024) }
+    var res = Resource { data : malloc(1024) }
     // ... use res ...
 } // res.delete() is called automatically here
 ```

@@ -73,16 +73,16 @@ var val = risk_call() else return err
 
 ## System & Diagnostics
 
-### `std::panic(message : *char)`
+### `panic(message : *char)`
 Halts execution immediately. Chemical's panic is **location-aware**; it automatically captures and prints the file, line, and character where the panic was called.
 
 ```ch
-std::panic("Critical Failure!"); 
+panic("Critical Failure!"); 
 // Output: panic with message 'Critical Failure!' at 'src/main.ch:12:5'
 ```
 
 ### Memory Management
-- `std::malloc` / `std::free`: Bare-metal heap allocation (C-interop).
+- `malloc` / `free`: Bare-metal heap allocation (C-interop).
 - `dealloc`: A keyword/intrinsic for safe, typed deallocation.
 
 ---

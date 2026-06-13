@@ -32,7 +32,7 @@ ctx.on_finished((data : *void) => {
         printf("Build succeeded! Launching...\n")
         j.ctx.launch_executable(j.job.getAbsPath(), true)
     }
-}, &jc)
+}, &ra wjc)
 ```
 
 ## C/C++ Interoperability
