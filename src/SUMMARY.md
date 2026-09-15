@@ -27,6 +27,9 @@
     - [Markdown Integration](web/markdown.md)
 
 - [Build System]()
+    - [Command Line Basics](buildsystem/command_line_basics.md)
+    - [chemical.mod](build/mod.md)
+    - [Conditional Compilation](buildsystem/conditional_compilation.md)
     - [Lab Overview](build/lab.md)
     - [Writing build.lab](build/build_lab.md)
     - [Advanced Build Patterns](build/advanced_lab.md)

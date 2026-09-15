@@ -1,520 +1,423 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0A0A0C">
+    <meta name="description" content="Chemical Programming Language Documentation - A modern systems programming language that compiles to C.">
     <link rel="shortcut icon" href="Favicon256.png" type="image/png">
-    <title>Chemical - Modern Systems & Web Programming</title>
+    <title>Chemical - Documentation</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #020617;
-            --bg-secondary: #0f172a;
-            --bg-tertiary: #1e293b;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --accent: #38bdf8;
-            --accent-hover: #0ea5e9;
-            --accent-glow: rgba(56, 189, 248, 0.2);
-            --border: rgba(255, 255, 255, 0.1);
-            --radius: 16px;
-            --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
-            --gradient-primary: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            --bg: #0A0A0C;
+            --bg-raised: #101014;
+            --bg-inset: #060608;
+            --text: #EDEDEF;
+            --muted: #8A8A93;
+            --border: #1E1E26;
+            --border-strong: #2A2A34;
+            --accent: #4DA3FF;
+            --accent-dim: rgba(77, 163, 255, 0.12);
+            --font-sans: 'Sora', system-ui, -apple-system, sans-serif;
+            --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: var(--font-sans);
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
+            background: var(--bg);
+            color: var(--text);
             line-height: 1.6;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
         }
 
-        #bg-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
+        a { color: inherit; }
+
+        :focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+            border-radius: 2px;
+        }
+
+        .wrap {
             width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.6;
-            background: radial-gradient(circle at 50% 50%, #0f172a 0%, #020617 100%);
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 24px;
         }
 
+        /* Header */
         header {
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 12, 0.88);
+            backdrop-filter: blur(8px);
+            z-index: 20;
+        }
+
+        .header-in {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            z-index: 10;
+            height: 64px;
         }
 
-        .logo {
+        .brand {
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-size: 1.75rem;
-            font-weight: 800;
-            color: var(--text-primary);
+            gap: 10px;
             text-decoration: none;
-            transition: transform 0.2s ease;
+            font-weight: 700;
+            font-size: 1.05rem;
+            letter-spacing: -0.01em;
         }
 
-        .logo:hover {
-            transform: scale(1.05);
+        .brand img { width: 26px; height: 26px; }
+
+        nav { display: flex; align-items: center; gap: 26px; }
+
+        nav a {
+            text-decoration: none;
+            color: var(--muted);
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.15s ease;
         }
 
-        .logo span {
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        nav a:hover { color: var(--text); }
 
-        .logo svg {
-            width: 36px;
-            height: 36px;
-            color: var(--accent);
-            filter: drop-shadow(0 0 8px var(--accent-glow));
-        }
-
-        main {
-            flex: 1;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-            padding: 4rem 2rem;
-            text-align: center;
-            position: relative;
-        }
-
-        .hero {
-            position: relative;
-            margin-bottom: 6rem;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 300px;
-            height: 300px;
+        nav a.nav-cta {
+            color: var(--bg);
             background: var(--accent);
-            filter: blur(120px);
-            opacity: 0.1;
-            border-radius: 50%;
-            z-index: -1;
+            padding: 7px 14px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        nav a.nav-cta:hover { background: #6FB5FF; color: var(--bg); }
+
+        /* Hero */
+        .hero { padding: 96px 0 72px; border-bottom: 1px solid var(--border); }
+
+        .kicker {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            margin-bottom: 20px;
         }
 
         .hero h1 {
-            font-size: clamp(3rem, 10vw, 5.5rem);
-            font-weight: 800;
-            line-height: 1;
-            margin-bottom: 2rem;
-            letter-spacing: -0.04em;
-        }
-
-        .hero h1 span {
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: block;
+            font-size: clamp(2.4rem, 6vw, 4rem);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            max-width: 640px;
         }
 
         .hero p {
-            font-size: 1.4rem;
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto 3.5rem auto;
-            font-weight: 400;
+            margin-top: 22px;
+            max-width: 560px;
+            color: var(--muted);
+            font-size: 1.06rem;
         }
 
-        .cta-group {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-        }
+        .hero-ctas { margin-top: 36px; display: flex; gap: 14px; flex-wrap: wrap; }
 
         .btn {
-            padding: 16px 40px;
-            border-radius: var(--radius);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 22px;
+            border-radius: 8px;
+            font-size: 0.925rem;
             font-weight: 600;
             text-decoration: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 1.1rem;
-            position: relative;
-            overflow: hidden;
+            transition: background 0.15s ease, border-color 0.15s ease;
         }
 
-        .btn-primary {
-            background: var(--gradient-primary);
-            color: white;
-            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.3);
-        }
+        .btn-primary { background: var(--accent); color: var(--bg); }
+        .btn-primary:hover { background: #6FB5FF; }
 
-        .btn-primary:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(56, 189, 248, 0.5);
-        }
+        .btn-ghost { border: 1px solid var(--border-strong); color: var(--text); }
+        .btn-ghost:hover { border-color: var(--accent); }
 
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-            backdrop-filter: blur(10px);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-4px);
-            border-color: var(--accent);
-        }
-
-        .code-container {
-            margin: 6rem auto;
-            max-width: 900px;
-            position: relative;
-        }
-
-        .code-container::after {
-            content: '';
-            position: absolute;
-            inset: -20px;
-            background: var(--accent);
-            filter: blur(100px);
-            opacity: 0.05;
-            z-index: -1;
-        }
-
-        .code-preview {
-            background: #020617;
-            padding: 2.5rem;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            text-align: left;
-            font-family: var(--font-mono);
-            font-size: 1.05rem;
-            overflow-x: auto;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
-            position: relative;
-            line-height: 1.5;
-        }
-
-        .code-preview::after {
-            content: 'main.ch';
-            position: absolute;
-            top: 12px;
-            right: 20px;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            opacity: 0.5;
-        }
-
-        .tok-kwd {
-            color: #f472b6;
-            font-weight: 600;
-        }
-
-        .tok-fn {
-            color: #60a5fa;
-        }
-
-        .tok-str {
-            color: #4ade80;
-        }
-
-        .tok-type {
-            color: #c084fc;
-        }
-
-        .tok-num {
-            color: #fbbf24;
-        }
-
-        .features {
+        .split {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            margin-top: 4rem;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 56px;
+            align-items: center;
         }
 
-        .feature-card {
-            background: rgba(255, 255, 255, 0.03);
+        .code-window {
+            background: var(--bg-inset);
             border: 1px solid var(--border);
-            padding: 2.5rem;
-            border-radius: var(--radius);
-            text-align: left;
-            backdrop-filter: blur(12px);
-            transition: all 0.3s ease;
-            position: relative;
+            border-radius: 10px;
             overflow: hidden;
         }
 
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--accent);
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .feature-card:hover::before {
-            opacity: 1;
-        }
-
-        .feature-card h3 {
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-            font-weight: 700;
+        .code-titlebar {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
         }
 
-        .feature-card h3::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--accent);
+        .code-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--border-strong); }
+
+        .code-titlebar .name {
+            margin-left: auto;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--muted);
         }
 
-        .feature-card p {
-            color: var(--text-secondary);
-            font-size: 1rem;
+        .code-window pre {
+            padding: 20px 18px;
+            overflow-x: auto;
+            font-family: var(--font-mono);
+            font-size: 0.86rem;
             line-height: 1.7;
         }
 
-        footer {
-            padding: 4rem 2rem;
-            text-align: center;
-            color: var(--text-secondary);
-            border-top: 1px solid var(--border);
-            font-size: 1rem;
-            margin-top: 6rem;
-            background: rgba(0, 0, 0, 0.2);
+        .tok-kwd { color: var(--accent); }
+        .tok-fn  { color: #A8C7E8; }
+        .tok-str { color: #7BD8C2; }
+        .tok-type { color: #B9A8E8; }
+        .tok-num { color: #E8C88A; }
+        .tok-com { color: #5A5A64; }
+
+        /* Sections */
+        section.block { padding: 72px 0; border-bottom: 1px solid var(--border); }
+        section.block:last-of-type { border-bottom: none; }
+
+        .block-head { margin-bottom: 40px; }
+        .block-head .kicker { margin-bottom: 10px; }
+
+        .block-head h2 {
+            font-size: clamp(1.5rem, 3.4vw, 2rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
         }
 
-        .scroll-reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            animation: reveal 0.8s forwards;
-        }
+        .paths { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 
-        @keyframes reveal {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 3.5rem;
-            }
-
-            .cta-group {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-                text-align: center;
-            }
-
-            .code-preview {
-                padding: 1.5rem;
-                font-size: 0.9rem;
-            }
-        }
-
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--bg-primary);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--bg-tertiary);
+        .path-card {
+            display: block;
+            text-decoration: none;
+            border: 1px solid var(--border);
             border-radius: 10px;
+            padding: 22px;
+            background: var(--bg-raised);
+            transition: border-color 0.15s ease;
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-secondary);
+        .path-card:hover { border-color: var(--accent); }
+
+        .path-card .pc-kicker {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .path-card h3 { font-size: 1.02rem; font-weight: 600; margin-bottom: 6px; }
+        .path-card p { color: var(--muted); font-size: 0.875rem; }
+
+        .path-card .arrow {
+            display: inline-block;
+            margin-top: 14px;
+            color: var(--accent);
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+        }
+
+        .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+        .feature {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 24px;
+            background: var(--bg-raised);
+        }
+
+        .feature .num {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent);
+            margin-bottom: 14px;
+        }
+
+        .feature h3 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
+        .feature p { color: var(--muted); font-size: 0.9rem; }
+
+        /* Footer */
+        footer { border-top: 1px solid var(--border); padding: 28px 0; }
+
+        .footer-in {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        .footer-in a { color: var(--muted); text-decoration: none; }
+        .footer-in a:hover { color: var(--text); }
+
+        .footer-links { display: flex; gap: 20px; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .split { grid-template-columns: 1fr; gap: 36px; }
+            .paths { grid-template-columns: 1fr; }
+            .hero { padding: 64px 0 56px; }
+        }
+
+        @media (max-width: 640px) {
+            nav a:not(.nav-cta) { display: none; }
+            .features { grid-template-columns: 1fr; }
+            .hero-ctas .btn { flex: 1; justify-content: center; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            * { transition: none !important; animation: none !important; }
         }
     </style>
 </head>
-
 <body>
-    <canvas id="bg-canvas"></canvas>
-
-    <header class="scroll-reveal">
-        <a href="#" class="logo">
-            <img src="Logo512.png" width="64px" height="64px" style="margin-right:8px;" />
-            <span>Chemical</span>
-        </a>
+    <header>
+        <div class="wrap header-in">
+            <a class="brand" href="index.html">
+                <img src="Logo512.png" alt="Chemical logo">
+                <span>Chemical</span>
+            </a>
+            <nav>
+                <a href="introduction.html">Guide</a>
+                <a href="stdlib/std.html">Standard Library</a>
+                <a href="build/cli.html">Build System</a>
+                <a class="nav-cta" href="getting_started.html">Get Started</a>
+            </nav>
+        </div>
     </header>
 
     <main>
-        <section class="hero scroll-reveal">
-            <h1>Engineered for <span>Performance.</span></h1>
-            <p>A modern systems language that compiles to C, combining low-level power with high-level developer
-                experience and native web integration.</p>
-
-            <div class="cta-group">
-                <a href="introduction.html" class="btn btn-primary">Start Reading</a>
-                <a href="getting_started.html" class="btn btn-secondary">Installation Guide</a>
-            </div>
-        </section>
-
-        <div class="code-container scroll-reveal" style="animation-delay: 0.2s">
-            <pre class="code-preview"><code><span class="tok-kwd">public func</span> <span class="tok-fn">main</span>() : <span class="tok-type">int</span> {
+        <div class="hero">
+            <div class="wrap split">
+                <div>
+                    <div class="kicker">DOCUMENTATION</div>
+                    <h1>Learn Chemical.</h1>
+                    <p>A modern systems language that compiles to C &mdash; low-level power,
+                        a high-level developer experience, and first-class web support.
+                        Start from zero and build up.</p>
+                    <div class="hero-ctas">
+                        <a class="btn btn-primary" href="introduction.html">Start Reading</a>
+                        <a class="btn btn-ghost" href="getting_started.html">Installation</a>
+                    </div>
+                </div>
+                <div class="code-window">
+                    <div class="code-titlebar">
+                        <span class="code-dot"></span><span class="code-dot"></span><span class="code-dot"></span>
+                        <span class="name">main.ch</span>
+                    </div>
+                    <pre><code><span class="tok-com">// Your first Chemical program</span>
+<span class="tok-kwd">public func</span> <span class="tok-fn">main</span>() : <span class="tok-type">int</span> {
     <span class="tok-kwd">var</span> message = <span class="tok-str">"Hello, Chemical!"</span>
     <span class="tok-fn">printf</span>(<span class="tok-str">"%s\n"</span>, message)
     <span class="tok-kwd">return</span> <span class="tok-num">0</span>
 }</code></pre>
+                </div>
+            </div>
         </div>
 
-        <section class="features scroll-reveal" style="animation-delay: 0.4s">
-            <div class="feature-card">
-                <h3>Zero-Overhead</h3>
-                <p>Direct translation to C with full memory control. No garbage collection pauses, just pure performance
-                    exactly where you need it.</p>
+        <section class="block">
+            <div class="wrap">
+                <div class="block-head">
+                    <div class="kicker">CHOOSE A PATH</div>
+                    <h2>Where do you want to go?</h2>
+                </div>
+                <div class="paths">
+                    <a class="path-card" href="language/basics.html">
+                        <div class="pc-kicker">01</div>
+                        <h3>Language Guide</h3>
+                        <p>Syntax, structs, enums, generics, interfaces and memory &mdash; the core of the language.</p>
+                        <span class="arrow">Read &rarr;</span>
+                    </a>
+                    <a class="path-card" href="web/overview.html">
+                        <div class="pc-kicker">02</div>
+                        <h3>Web Development</h3>
+                        <p>The #html macro, scopes, components and mounting &mdash; build for the browser natively.</p>
+                        <span class="arrow">Read &rarr;</span>
+                    </a>
+                    <a class="path-card" href="stdlib/std.html">
+                        <div class="pc-kicker">03</div>
+                        <h3>Standard Library</h3>
+                        <p>Strings, JSON, files, networking and concurrency &mdash; batteries included.</p>
+                        <span class="arrow">Read &rarr;</span>
+                    </a>
+                </div>
             </div>
-            <div class="feature-card">
-                <h3>Native Interop</h3>
-                <p>Seamlessly call any C or C++ function. Use the world's largest library ecosystems without any
-                    performance penalties or complex wrappers.</p>
-            </div>
-            <div class="feature-card">
-                <h3>Built for Web</h3>
-                <p>First-class support for modern web workflows. Compile logic for the backend or frontend with equal
-                    ease and type safety.</p>
-            </div>
-            <div class="feature-card">
-                <h3>Modern Safety</h3>
-                <p>Strong static typing, generics, and interfaces catch errors at compile-time, allowing you to move
-                    fast without breaking things.</p>
+        </section>
+
+        <section class="block">
+            <div class="wrap">
+                <div class="block-head">
+                    <div class="kicker">WHY CHEMICAL</div>
+                    <h2>Built for systems, designed for people.</h2>
+                </div>
+                <div class="features">
+                    <div class="feature">
+                        <div class="num">01</div>
+                        <h3>Zero-Overhead</h3>
+                        <p>Direct translation to C with full memory control. No garbage collection pauses &mdash; just predictable performance.</p>
+                    </div>
+                    <div class="feature">
+                        <div class="num">02</div>
+                        <h3>Native Interop</h3>
+                        <p>Call any C or C++ function directly. Use the world's largest library ecosystems without wrappers or bindings generators.</p>
+                    </div>
+                    <div class="feature">
+                        <div class="num">03</div>
+                        <h3>Built for Web</h3>
+                        <p>First-class web workflows: HTML, CSS and JS as language constructs, compiled with full type safety.</p>
+                    </div>
+                    <div class="feature">
+                        <div class="num">04</div>
+                        <h3>Modern Safety</h3>
+                        <p>Strong static typing, generics and interfaces catch errors at compile time, so you can move fast without breaking things.</p>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
 
-    <footer class="scroll-reveal">
-        &copy; 2026 Chemical Language. Crafted for the modern era.
+    <footer>
+        <div class="wrap footer-in">
+            <span>&copy; 2026 Chemical Language</span>
+            <div class="footer-links">
+                <a href="introduction.html">Introduction</a>
+                <a href="getting_started.html">Get Started</a>
+                <a href="language/basics.html">Language</a>
+                <a href="stdlib/std.html">Std Library</a>
+            </div>
+        </div>
     </footer>
-
-    <script>
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-
-        let particles = [];
-        const particleCount = 60;
-        const maxDistance = 150;
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
-        window.addEventListener('resize', resize);
-        resize();
-
-        class Particle {
-            constructor() {
-                this.init();
-            }
-
-            init() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.radius = Math.random() * 2 + 1;
-            }
-
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-
-                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(56, 189, 248, 0.3)';
-                ctx.fill();
-            }
-        }
-
-        for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-
-                    if (dist < maxDistance) {
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = `rgba(56, 189, 248, ${0.15 * (1 - dist / maxDistance)})`;
-                        ctx.lineWidth = 1;
-                        ctx.stroke();
-                    }
-                }
-            }
-
-            requestAnimationFrame(animate);
-        }
-
-        animate();
-    </script>
 </body>
-
 </html>
