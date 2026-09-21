@@ -356,3 +356,18 @@ func <T> (opt : &Option<T>) is_some() : bool {
 }
 ```
 
+### Extension Functions on Unions
+
+Extension functions can also be added to unions:
+
+```ch
+union Data {
+    var int_val : int
+    var float_val : float
+}
+
+func (d : &Data) is_int() : bool {
+    return true  // simplified example
+}
+```
+

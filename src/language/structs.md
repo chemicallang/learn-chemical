@@ -178,7 +178,7 @@ struct Inherited2 {
     }
 }
 
-// will generate an automatic construcotr because Inherited2 has a default construcotr
+// will generate an automatic constructor because Inherited2 has a default constructor
 struct Auto5 : Inherited2 {
 
 }
