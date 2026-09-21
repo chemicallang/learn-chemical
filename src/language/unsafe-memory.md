@@ -14,8 +14,7 @@ Pointers are raw memory addresses, similar to C pointers. They are **unsafe** to
 - `*T`: Immutable pointer.
 - `*mut T`: Mutable pointer.
 
-In Chemical, when you use & operator on a value, you take a pointer (not a reference), that's because references
-are taken implicitly in chemical. If the type is a reference, you just need to pass a l-value.
+In Chemical, when you use & operator on a value, you take a reference. To take a raw pointer, use `&raw` instead.
 
 ### Taking Addresses
 

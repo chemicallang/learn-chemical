@@ -37,7 +37,7 @@ You can submit tasks that return a value using `submit`, which returns a `Future
 
 ```ch
 // Submit a task with a return value
-var future = pool.submit<int>(|x| () => {
+var future = pool.submit<int>(() => {
     return 42
 })
 

@@ -73,7 +73,7 @@ var queries = http::parse_query(raw_url)
 Chemical also includes an experimental `http_client` for making outbound requests.
 
 ```ch
-import net.client
+import http_client
 
 var resp = http_client::get("http://api.example.com/data")
 if (resp is std::Option.Some) {
